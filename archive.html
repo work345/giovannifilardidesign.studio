@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Archive | Giovanni Filardi Design</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* [ RESET E BASE ] */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        
+        body { 
+            background-color: #000; 
+            font-family: 'Clash Display', sans-serif; 
+            overflow-x: hidden; 
+            color: #fff; 
+            letter-spacing: 0.02em; 
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            
+            /* [ CURSORE INDUSTRIALE: BLOCCO SOLIDO ] */
+            cursor: url('data:image/svg+xml;utf8,<svg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"><rect width="6" height="6" fill="%23ffffff"/></svg>') 3 3, auto;
+        }
+
+        /* [ CURSORE INDUSTRIALE: TARGET LOCK ] */
+        a, button, .archive-stats span, .monolith-email, .hover-cta, .matrix-cell, .mob-expand-btn, .modal-close {
+            cursor: url('data:image/svg+xml;utf8,<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" fill="none" stroke="%23ffffff" stroke-width="1.5"/></svg>') 5 5, pointer !important;
+        }
+
+        /* [ SCROLLBAR D'ÉLITE - REDUCTIVE LOGIC ESTREMA RICALIBRATA ] */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #000; border-left: 1px solid rgba(255, 255, 255, 0.10); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.45); border-radius: 0; transition: background 0.3s ease; }
+        ::-webkit-scrollbar-thumb:hover { background: #fff; }
+
+        /* [ FIDUCIAL ALIGNMENT MARKS - L'ÉLITE ] */
+        .fiducial-mark {
+            position: fixed; width: 14px; height: 14px; pointer-events: none; z-index: 10;
+            opacity: 0.3; transition: opacity 0.3s ease;
+        }
+        .fiducial-mark::before {
+            content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: #fff; transform: translateY(-50%);
+        }
+        .fiducial-mark::after {
+            content: ''; position: absolute; top: 0; left: 50%; width: 1px; height: 100%; background: #fff; transform: translateX(-50%);
+        }
+        .fm-top-left { top: 2vw; left: 2vw; }
+        .fm-top-right { top: 2vw; right: 2vw; }
+        .fm-bot-left { bottom: 2vw; left: 2vw; }
+        .fm-bot-right { bottom: 2vw; right: 2vw; }
+
+        /* [ HEADER D'ÉLITE (LOGO + NAV ALLINEATI ALL'ASSE CENTRALE) ] */
+        .sys-header {
+            position: fixed;
+            top: 0; left: 0; width: 100vw;
+            padding: 2.5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            z-index: 50;
+            mix-blend-mode: difference;
+            pointer-events: none; 
+        }
+        .sys-header > * { pointer-events: auto; }
+
+        .brand-logo { 
+            width: 120px; filter: invert(1); transition: opacity 0.3s ease; display: block; 
+            will-change: transform, opacity;
+            animation: sysFadeLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .brand-logo:hover { opacity: 0.7; }
+
+        .elite-nav { 
+            display: flex; gap: 3vw; 
+            will-change: transform, opacity;
+            transform: translateZ(0); 
+            animation: sysFadeRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .elite-nav a { color: #fff; text-decoration: none; font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0.5; }
+        .elite-nav a:hover, .elite-nav a.active { opacity: 1; letter-spacing: 0.15em; }
+
+        @keyframes sysFadeLeft {
+            0% { opacity: 0; transform: translateX(-15px) translateZ(0); }
+            100% { opacity: 1; transform: translateX(0) translateZ(0); }
+        }
+        @keyframes sysFadeRight {
+            0% { opacity: 0; transform: translateX(15px) translateZ(0); }
+            100% { opacity: 1; transform: translateX(0) translateZ(0); }
+        }
+
+        /* [ HEADER ARCHIVIO ] */
+        .archive-page-wrapper { padding: 15vw 5vw 8vw 5vw; background-color: #000; position: relative; z-index: 5; }
+        
+        /* [ CERTIFICAZIONE DI SISTEMA & DECRYPTION (HIGH-VOLTAGE) ] */
+        .sys-data-certification { 
+            position: relative; 
+            margin-bottom: 3vw;
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: clamp(0.6rem, 1vw, 0.75rem); 
+            font-weight: 600; 
+            color: rgba(255,255,255,0.4); 
+            letter-spacing: 0.25em; 
+            text-transform: uppercase; 
+            pointer-events: none; 
+            white-space: nowrap;
+            will-change: content; 
+        }
+
+        .sys-data-certification.decrypting {
+            color: #e5f3ff;
+            text-shadow: 0 0 10px rgba(229, 243, 255, 0.8), 0 0 20px rgba(229, 243, 255, 0.4);
+        }
+
+        .sys-data-certification.decrypted {
+            animation: electricStrobe 0.6s ease-out forwards;
+        }
+
+        @keyframes electricStrobe {
+            0% { color: #fff; text-shadow: 0 0 30px #fff, 0 0 50px #fff; }
+            15% { color: #000; text-shadow: none; }
+            25% { color: #fff; text-shadow: 0 0 40px #fff; }
+            35% { color: #000; text-shadow: none; }
+            45% { color: #fff; text-shadow: 0 0 20px #fff; }
+            100% { color: rgba(255,255,255,0.4); text-shadow: none; }
+        }
+
+        .archive-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 2rem; }
+        .section-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.5); }
+        .archive-stats { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; color: rgba(255,255,255,0.8); }
+
+        /* [ LA MATRICE DI INGEGNERIA - DESKTOP ] */
+        .archive-matrix { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 35vw; gap: 1.5vw; }
+        .span-12 { grid-column: span 12; } .span-8 { grid-column: span 8; } .span-6 { grid-column: span 6; } .span-4 { grid-column: span 4; }
+
+        .matrix-cell { position: relative; overflow: hidden; background: #0a0a0a; cursor: crosshair; }
+        
+        /* [ RETICOLO DI PUNTAMENTO D'ÉLITE (FOCUS BRACKETS) ] */
+        .focus-ring {
+            position: absolute; top: 1.2vw; left: 1.2vw; right: 1.2vw; bottom: 1.2vw;
+            z-index: 30; pointer-events: none;
+            opacity: 0; transform: scale(1.04);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            background: 
+                linear-gradient(to right, #fff 1.5px, transparent 1.5px) 0 0,
+                linear-gradient(to bottom, #fff 1.5px, transparent 1.5px) 0 0,
+                linear-gradient(to left, #fff 1.5px, transparent 1.5px) 100% 0,
+                linear-gradient(to bottom, #fff 1.5px, transparent 1.5px) 100% 0,
+                linear-gradient(to right, #fff 1.5px, transparent 1.5px) 0 100%,
+                linear-gradient(to top, #fff 1.5px, transparent 1.5px) 0 100%,
+                linear-gradient(to left, #fff 1.5px, transparent 1.5px) 100% 100%,
+                linear-gradient(to top, #fff 1.5px, transparent 1.5px) 100% 100%;
+            background-repeat: no-repeat;
+            background-size: 20px 20px; 
+        }
+        
+        .img-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        
+        .img-wrapper img.base-img, .img-wrapper img.single-img { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.8s ease, opacity 0.6s ease; 
+        }
+        
+        .img-wrapper .hover-img { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center;
+            opacity: 0; transform: scale(1);
+            transition: opacity 0.6s ease, filter 0.8s ease, transform 6s cubic-bezier(0.21, 0.83, 0.3, 1); 
+        }
+
+        /* [ CALIBRAZIONE OTTICA: PLATANO (DESKTOP) ] */
+        @media (min-width: 769px) {
+            .matrix-cell[data-project="platano"] .base-img,
+            .matrix-cell[data-project="platano"] .hover-img {
+                object-position: center 70%;
+            }
+        }
+        
+        /* HOVER DESKTOP */
+        @media (hover: hover) and (pointer: fine) {
+            .matrix-cell:hover .hover-img { opacity: 1; transform: scale(1.08); filter: grayscale(100%) brightness(0.7); }
+            .matrix-cell:hover .base-img { opacity: 0; transform: scale(1.03); }
+            .matrix-cell:hover .single-img { transform: scale(1.08); filter: grayscale(100%) brightness(0.7); transition: transform 6s cubic-bezier(0.21, 0.83, 0.3, 1), filter 0.8s ease; }
+            .matrix-cell:hover .hover-cta { opacity: 1; background: #fff; color: #000; border: 1px solid #fff; }
+            .matrix-cell:hover .tech-overlay { transform: translateY(0); }
+            .matrix-cell:hover .focus-ring { opacity: 1; transform: scale(1); }
+        }
+
+        /* [ TAG TRIGGER AZIONE - DESKTOP ] */
+        .hover-cta {
+            position: absolute; 
+            top: 2vw; 
+            right: 2vw; 
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: 0.65rem; 
+            font-weight: 600; 
+            z-index: 40; 
+            pointer-events: auto; 
+            padding: 0.5rem 0.8rem; 
+            opacity: 0; 
+            color: #fff;
+            background: transparent;
+            border: 1px solid transparent;
+            transition: none; 
+        }
+
+        /* [ EFFETTO X-RAY: IL DOSSIER TECNICO - DESKTOP ] */
+        .tech-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.95); border-top: 1px solid rgba(255,255,255,0.2); padding: 2.5vw; transform: translateY(101%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; gap: 1.5rem; z-index: 10; }
+        
+        .project-title { font-size: clamp(1.2rem, 1.8vw, 1.8rem); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.1; }
+        .project-title span { display: block; font-size: 0.75rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-top: 0.4rem; letter-spacing: 0.15em; }
+        
+        .tech-specs { display: flex; gap: 3vw; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; }
+        .spec-item { display: flex; flex-direction: column; gap: 0.4rem; }
+        .spec-label { font-size: 0.6rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.2em; }
+        .spec-value { font-size: 0.75rem; color: #fff; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* [ PROJECT MODAL (DVH ALLINEATO) ] */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100vw; 
+            height: 100vh; height: 100dvh; 
+            background: rgba(0, 0, 0, 0.98); z-index: 100; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1); backdrop-filter: blur(8px); 
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-container { 
+            width: 95vw; max-width: 1600px; 
+            height: 85vh; height: 85dvh; 
+            background: #050505; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; transform: translateY(20px); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .modal-overlay.active .modal-container { transform: translateY(0); }
+        
+        .modal-header { display: flex; justify-content: space-between; padding: 1.5vw 2vw; border-bottom: 1px solid rgba(255,255,255,0.1); flex: none; }
+        .modal-title-small { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; color: #fff; text-transform: uppercase; }
+        
+        .modal-close { 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            letter-spacing: 0.2em; 
+            color: rgba(255,255,255,0.5); 
+            transition: color 0.3s ease; 
+            white-space: nowrap; 
+        }
+        .modal-close:hover { color: #fff; }
+        
+        .modal-content-split { display: flex; height: 100%; padding: 2vw; gap: 4vw; overflow: hidden; }
+        
+        .modal-text-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; overflow-y: auto; padding-right: 1vw; }
+        .modal-main-title { font-size: clamp(2rem, 3vw, 3.5rem); font-weight: 600; line-height: 1.1; text-transform: uppercase; margin-bottom: 2rem; letter-spacing: 0.02em; }
+        .modal-description { font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.7); font-weight: 400; white-space: pre-line; }
+        
+        /* GRIGLIA IMMAGINI MODAL (DEFAULT 3 IMMAGINI) */
+        .modal-image-grid { flex: 2; display: grid; grid-template-columns: 1.8fr 1fr; grid-template-rows: 1fr 1fr; gap: 1vw; height: 100%; }
+        .img-hero { grid-column: 1; grid-row: 1 / span 2; position: relative; }
+        .img-detail-top { grid-column: 2; grid-row: 1; position: relative; overflow: hidden; }
+        .img-detail-bot { grid-column: 2; grid-row: 2; position: relative; overflow: hidden; }
+        
+        /* GRIGLIA IMMAGINI MODAL (VARIANTE 2 IMMAGINI - ES. ONE) */
+        .modal-image-grid.layout-two { display: flex; flex-direction: column; gap: 1vw; }
+        .modal-image-grid.layout-two .img-hero, 
+        .modal-image-grid.layout-two .img-detail-top { flex: 1; width: 100%; height: calc(50% - 0.5vw); position: relative; overflow: hidden; background: #050505; }
+        
+        .modal-image-grid img.proj-img { width: 100%; height: 100%; object-fit: cover; object-position: center; background: #050505; }
+        
+        .modal-badge {
+            position: absolute; bottom: 1.5vw; right: 1.5vw; width: clamp(70px, 8vw, 110px); opacity: 0.35; pointer-events: none; transition: opacity 0.4s ease; z-index: 5; display: none; 
+        }
+        .img-hero:hover .modal-badge { opacity: 0.8; }
+
+        /* [ MONOLITE NERO DESKTOP ] */
+        .monolith-section { 
+            min-height: 80vh; min-height: 80dvh; 
+            width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #000; color: #fff; position: relative; border-top: 1px solid rgba(255,255,255,0.05); 
+        }
+        .monolith-email { font-size: clamp(1rem, 2.5vw, 2.2rem); font-weight: 500; color: #fff; text-decoration: none; letter-spacing: 0.1em; position: relative; padding-bottom: 0.5rem; text-align: center; }
+        .monolith-email::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 1px; bottom: 0; left: 0; background-color: #fff; transform-origin: bottom right; transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1); }
+        .monolith-email:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+        .monolith-email:hover { opacity: 0.9; }
+        .monolith-footer { position: absolute; bottom: 4vw; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; opacity: 0.4; transition: opacity 0.4s ease; }
+        .monolith-section:hover .monolith-footer { opacity: 0.8; }
+        
+        .monolith-collaborations { 
+            font-size: 0.75rem; font-weight: 500; text-transform: uppercase; 
+            letter-spacing: 0.2em; text-align: center; max-width: 90vw; line-height: 1.6;
+        }
+
+        .legal-info { display: flex; gap: 3vw; font-size: 0.65rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        /* Link Fotografo d'Élite */
+        .footer-link {
+            color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 2px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap;
+        }
+        .footer-link:hover { border-bottom-color: #fff; color: #fff; }
+
+        /* ==========================================================================
+           [ OTTIMIZZAZIONE ELITE MOBILE & TABLET ]
+           ========================================================================== */
+        @media (max-width: 900px) {
+            .archive-matrix { grid-auto-rows: 45vw; }
+            .span-8, .span-4, .span-6 { grid-column: span 6; }
+            .tech-specs { flex-direction: column; gap: 1rem; }
+        }
+        
+        @media (max-width: 768px) {
+            body { cursor: auto !important; } 
+            .fiducial-mark, .focus-ring { display: none; } 
+            .sys-header { padding: 5vw; align-items: flex-start; }
+            .brand-logo { width: 90px; }
+            .elite-nav { gap: 4vw; margin-top: 1.4rem; }
+            .elite-nav a { font-size: 0.75rem; }
+            
+            .archive-page-wrapper { padding: 25vw 0 8vw 0; } 
+            .sys-data-certification, .archive-header { padding: 0 5vw; }
+            .sys-data-certification { font-size: 0.55rem; white-space: normal; line-height: 1.6; margin-bottom: 8vw; }
+            
+            .archive-matrix { 
+                display: grid; 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 1px; 
+                background: rgba(255,255,255,0.1); 
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+            .mob-full { grid-column: span 2; }
+            .mob-half { grid-column: span 1; }
+
+            .matrix-cell { 
+                display: flex; 
+                flex-direction: column; 
+                background: #000;
+                height: auto;
+                aspect-ratio: auto;
+            }
+            
+            .img-wrapper {
+                position: relative;
+                width: 100%;
+                aspect-ratio: 4/3; 
+                background: #050505;
+            }
+            .mob-half .img-wrapper { aspect-ratio: 1/1; }
+            
+            .tech-overlay { 
+                position: relative; 
+                transform: none !important; 
+                background: #0c0c0c; 
+                border-top: none; 
+                padding: 5vw; 
+                padding-bottom: 12vw; 
+                display: flex; 
+                flex-direction: column; 
+                gap: 1rem; 
+                height: 100%;
+                justify-content: flex-start;
+            }
+            .mob-half .tech-overlay {
+                padding: 4vw;
+                padding-bottom: 12vw;
+                gap: 0.5rem;
+            }
+
+            .project-title { font-size: 1.1rem; }
+            .mob-half .project-title { font-size: 0.75rem; }
+            .project-title span { font-size: 0.6rem; margin-top: 0.2rem; }
+            .mob-half .project-title span { font-size: 0.5rem; }
+            
+            .tech-specs { padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); }
+            .mob-half .tech-specs { padding-top: 0.5rem; }
+            .spec-label { font-size: 0.5rem; }
+            .spec-value { font-size: 0.65rem; }
+            .mob-half .spec-value { font-size: 0.55rem; }
+
+            /* PROTOCOLLO MOBILE SMART TAG */
+            .hover-cta {
+                opacity: 1 !important;
+                font-size: 0 !important; 
+                top: auto; 
+                bottom: 4vw; 
+                right: 5vw;
+                border: 1px solid rgba(255,255,255,0.2); 
+                background: transparent;
+                padding: 0.4rem 0.6rem;
+                display: flex; align-items: center; justify-content: center;
+                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .mob-half .hover-cta { right: 4vw; padding: 0.3rem 0.5rem; border: none; }
+            
+            .hover-cta::after {
+                content: '+ EXPAND DATA';
+                font-size: 0.55rem;
+                color: rgba(255,255,255,0.4);
+                letter-spacing: 0.1em;
+                transition: all 0.3s ease;
+            }
+            .mob-half .hover-cta::after { content: '[ + ] DATA'; }
+
+            .matrix-cell.touch-hover .hover-cta {
+                background: #fff !important;
+                border-color: #fff !important;
+                padding: 0.6rem 0.8rem; 
+            }
+            .matrix-cell.touch-hover .hover-cta::after {
+                content: '[ TAP TO OPEN ]' !important;
+                color: #000 !important;
+                font-weight: 700;
+            }
+            .mob-half.touch-hover .hover-cta { padding: 0.5rem 0.6rem; }
+
+            .matrix-cell.touch-hover .hover-img { opacity: 1; transform: scale(1.05); filter: grayscale(100%) brightness(0.7); }
+            .matrix-cell.touch-hover .base-img { opacity: 0; transform: scale(1.03); }
+            .matrix-cell.touch-hover .single-img { transform: scale(1.05); filter: grayscale(100%) brightness(0.7); }
+
+            .matrix-cell.touch-hover .tech-overlay { background: #151515; } 
+
+            .modal-content-split { display: flex; flex-direction: column; overflow-y: auto; padding: 6vw 5vw; gap: 6vw; }
+            .modal-text-col { flex: none; padding-right: 0; }
+            .modal-main-title { font-size: 2.2rem; margin-bottom: 1.5rem; }
+            .modal-description { font-size: 0.85rem; }
+            .modal-image-grid { flex: none; display: flex; flex-direction: column; gap: 4vw; height: auto; }
+            
+            /* RESET LAYOUT 2 IMMAGINI PER MOBILE (SI IMPILANO NATURALMENTE) */
+            .modal-image-grid.layout-two .img-hero, 
+            .modal-image-grid.layout-two .img-detail-top { height: auto; }
+            
+            .modal-image-grid img.proj-img { height: auto; max-height: 50vh; object-fit: contain; }
+            .modal-badge { width: 80px; bottom: 3vw; right: 3vw; }
+
+            /* COMPRESSIONE E FISICA DELLA GRIGLIA PER MONOLITH SECTION (MOBILE) */
+            .monolith-section { 
+                min-height: 60vh; min-height: 60dvh; 
+                display: grid; 
+                grid-template-rows: 1fr auto; 
+                justify-items: center; 
+                align-items: center; 
+                padding-bottom: 12vw; 
+            }
+            .monolith-email { 
+                align-self: center; 
+                font-size: 1.1rem; 
+                border-bottom: 1px solid rgba(255,255,255,0.3); 
+                padding-bottom: 0.2rem; 
+            }
+            .monolith-email::after { display: none; } 
+            .monolith-footer { 
+                position: relative; /* RIPORTA IL FOOTER NEL FLUSSO MATEMATICO DELLA GRIGLIA */
+                bottom: auto; 
+                gap: 2rem; 
+                padding: 0 5vw; 
+            }
+            .legal-info { flex-direction: column; align-items: center; gap: 0.8rem; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .sys-header { padding: 6vw 5vw; align-items: flex-start; }
+            .elite-nav { gap: 3vw; margin-top: 1.2rem; }
+            .elite-nav a { font-size: 0.65rem; } 
+            
+            .archive-header { flex-direction: column; align-items: flex-start; gap: 1rem; border-bottom: none; padding-bottom: 0; margin-bottom: 2rem; }
+            .section-label { margin-bottom: 0.5rem; }
+            .archive-stats { width: 100%; justify-content: flex-start; font-size: 0.55rem; gap: 0; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.15); }
+
+            .monolith-email { font-size: 0.95rem; }
+            .monolith-collaborations { font-size: 0.65rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fiducial-mark fm-top-left"></div>
+    <div class="fiducial-mark fm-top-right"></div>
+    <div class="fiducial-mark fm-bot-left"></div>
+    <div class="fiducial-mark fm-bot-right"></div>
+
+    <header class="sys-header">
+        <a href="index.html" class="logo-link">
+            <img src="img/logo.png" alt="Giovanni Filardi Logo" class="brand-logo">
+        </a>
+        <nav class="elite-nav">
+            <a href="index.html#manifesto">Manifesto</a>
+            <a href="archive.html" class="active">Archive</a>
+            <a href="studio.html">Studio</a>
+        </nav>
+    </header>
+
+    <div class="archive-page-wrapper">
+        <div class="sys-data-certification">SYS.DATA // 35+ MASS-PRODUCED ASSETS GLOBAL // STRUCTURAL PERMANENCE</div>
+        <div class="archive-header">
+            <div class="section-label">// TECHNICAL INDEX</div>
+            <div class="archive-stats"><span>[ STRICT SELECTION : 10 ]</span></div>
+        </div>
+        
+        <div class="archive-matrix">
+            
+            <div class="matrix-cell span-8 mob-full" data-project="aura">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/aura1.png" class="base-img" alt="Aura">
+                    <img src="img/aura2.png" class="hover-img" alt="Aura Detail">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">AURA <span>// DURAGREEN LIGHTING (UK) [2025]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">MASS-PRODUCED</div></div>
+                        <div class="spec-item"><div class="spec-label">VALIDATION</div><div class="spec-value">[D]ARC AWARDS // OFFICIAL RECOGNITION</div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="matrix-cell span-4 mob-full" data-project="bellazoom">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/bellazoom1.png" class="base-img" alt="Bella Zoom">
+                    <img src="img/bellazoom2.png" class="hover-img" alt="Bella Zoom Detail">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">BELLA ZOOM <span>// DURAGREEN LIGHTING (UK) [2024]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">MASS-PRODUCED</div></div>
+                        <div class="spec-item"><div class="spec-label">VALIDATION</div><div class="spec-value">[D]ARC AWARDS // OFFICIAL RECOGNITION</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-cell span-4 mob-half" data-project="series03">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/Vacuum2.0.png" class="base-img" alt="Series 03 Base">
+                    <img src="img/Vacuum2.2.png" class="hover-img" alt="Series 03 Hover">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">SERIES 03 <span>// ALMARJAN (UAE) [2025]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">SECTOR</div><div class="spec-value">HIGH-VOLUME F&B</div></div>
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">MASS-PRODUCED</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-cell span-4 mob-half" data-project="series04">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/Vacuum1.1.png" class="base-img" alt="Series 04 Base">
+                    <img src="img/Vacuum1.2.png" class="hover-img" alt="Series 04 Hover">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">SERIES 04 <span>// ALMARJAN (UAE) [2026]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">SECTOR</div><div class="spec-value">HIGH-VOLUME F&B</div></div>
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">MASS-PRODUCED</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-cell span-4 mob-half" data-project="series02">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/Vacuum3.1.png" class="base-img" alt="Series 02 Base">
+                    <img src="img/Vacuum3.2.png" class="hover-img" alt="Series 02 Hover">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">SERIES 02 <span>// ALMARJAN (UAE) [2025]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">SECTOR</div><div class="spec-value">HIGH-VOLUME F&B</div></div>
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">MASS-PRODUCED</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-cell span-4 mob-half" data-project="aperol">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/Aperol1.png" class="base-img" alt="Aperol Core">
+                    <img src="img/Aperol2.png" class="hover-img" alt="Aperol Core Hover">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">APEROL CORE <span>// QUINDICIZEROTRE FOR APEROL [2025]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">SECTOR</div><div class="spec-value">HIGH-VOLUME F&B</div></div>
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">ENGINEERED PROTOTYPE</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-cell span-8 mob-full" data-project="kasanova">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/kasanova1.png" class="base-img" alt="Thermal Fluid Tray Base">
+                    <img src="img/kasanova2.png" class="hover-img" alt="Thermal Fluid Tray Detail">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">THERMAL FLUID TRAY <span>// KASANOVA (ITALY) [2025]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">SECTOR</div><div class="spec-value">HIGH-VOLUME RETAIL</div></div>
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">MASS-PRODUCED</div></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="matrix-cell span-6 mob-half" data-project="platano">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/platano1.png" class="base-img" alt="Platano Floor Lamp">
+                    <img src="img/platano2.png" class="hover-img" alt="Platano Detail">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">PLATANO <span>// COLUME (ITALY) [2020]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">SECTOR</div><div class="spec-value">SCULPTURAL LIGHTING</div></div>
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">ENGINEERED BATCH</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-cell span-6 mob-half" data-project="paceiro">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/quokka1.png" class="base-img" alt="Paceiro Ergonomic Footrest">
+                    <img src="img/quokka2.png" class="hover-img" alt="Paceiro Detail">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">PACEIRO <span>// QUOKKA FLOW (SINGAPORE) [2022]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">SECTOR</div><div class="spec-value">ERGONOMIC HARDWARE</div></div>
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">MASS-PRODUCED</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matrix-cell span-12 mob-full" data-project="one">
+                <div class="focus-ring"></div>
+                <div class="hover-cta">+ EXPAND STRUCTURAL DATA</div>
+                <div class="img-wrapper">
+                    <img src="img/one1.png" class="base-img" alt="ONE Tactical Knife">
+                    <img src="img/one2.png" class="hover-img" alt="ONE Tactical Knife Detail">
+                </div>
+                <div class="tech-overlay">
+                    <div class="project-title">ONE <span>// BERGKVIST (GERMANY) [2022]</span></div>
+                    <div class="tech-specs">
+                        <div class="spec-item"><div class="spec-label">SECTOR</div><div class="spec-value">TACTICAL EQUIPMENT</div></div>
+                        <div class="spec-item"><div class="spec-label">STATUS</div><div class="spec-value">MASS-PRODUCED</div></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-title-small" id="modalCategory">// TECHNICAL DOSSIER</div>
+                <div class="modal-close" onclick="closeModal()">[ CLOSE ]</div>
+            </div>
+            <div class="modal-content-split">
+                
+                <div class="modal-text-col">
+                    <h2 class="modal-main-title" id="modalTitle">TITOLO PROGETTO</h2>
+                    <p class="modal-description" id="modalDesc">Descrizione.</p>
+                </div>
+                
+                <div class="modal-image-grid" id="modalGridSystem">
+                    <div class="img-hero" id="heroWrapper">
+                        <img class="proj-img" id="modalImg1" src="" alt="View 1">
+                        <img src="img/badge1.png" class="modal-badge" id="modalBadge">
+                    </div>
+                    <div class="img-detail-top" id="topWrapper"><img class="proj-img" id="modalImg2" src="" alt="View 2"></div>
+                    <div class="img-detail-bot" id="botWrapper"><img class="proj-img" id="modalImg3" src="" alt="View 3"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="monolith-section">
+        <a href="mailto:WORK@GIOVANNIFILARDIDESIGN.STUDIO?subject=Inquiry:%20Studio%20Availability" class="monolith-email">WORK@GIOVANNIFILARDIDESIGN.STUDIO</a>
+        <div class="monolith-footer">
+            <div class="monolith-collaborations">
+                SELECTED COLLABORATIONS: APEROL / PAMPERO / KASANOVA / SMEG / DURAGREEN LIGHTING / ALMARJAN / BERGKVIST
+            </div>
+            <div class="legal-info">
+                <span>&copy; 2026 GIOVANNI FILARDI DESIGN</span>
+                <span>PORTRAIT PHOTOGRAPHY: <a href="https://www.instagram.com/federico.lano/" target="_blank" rel="noopener noreferrer" class="footer-link">FEDERICO LANO ↗</a></span>
+                <span>TORINO, ITALY // VAT ID 12452260016</span>
+                <span>ALL RIGHTS RESERVED</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MOTORE DI DECODIFICA (DATA DECRYPTION) PER L'ARCHIVIO - OPTIMIZED WITH requestAnimationFrame
+        document.addEventListener('DOMContentLoaded', () => {
+            const targetEl = document.querySelector('.sys-data-certification');
+            if (targetEl) {
+                const finalString = targetEl.innerText;
+                targetEl.innerText = '';
+                targetEl.classList.add('decrypting');
+
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+<>//';
+                let iterations = 0;
+                const maxIterations = 40; // Ricalibrato per esecuzione fulminea e stabilità del sistema
+
+                function updateText() {
+                    targetEl.innerText = finalString.split('').map((char, index) => {
+                        if (char === ' ') return ' '; 
+                        if (index < (iterations / maxIterations) * finalString.length) {
+                            return finalString[index];
+                        }
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    }).join('');
+
+                    iterations += 0.8; // Velocità di decodifica ottimale, no memory leak
+
+                    if (iterations <= maxIterations) {
+                        requestAnimationFrame(updateText);
+                    } else {
+                        targetEl.innerText = finalString; 
+                        targetEl.classList.remove('decrypting');
+                        targetEl.classList.add('decrypted'); 
+                    }
+                }
+
+                // Innesco animazione hardware-accelerated
+                requestAnimationFrame(updateText);
+            }
+
+            // MOTORE LOGICO PER L'INTERAZIONE MOBILE (Smart Tag)
+            const cells = document.querySelectorAll('.matrix-cell');
+            cells.forEach(cell => {
+                cell.addEventListener('click', function(e) {
+                    const projectId = this.getAttribute('data-project');
+                    
+                    if (window.innerWidth <= 768) {
+                        // Primo tocco: attiva lo stato "Touch-Hover" ed espone il pulsante [ TAP TO OPEN ]
+                        if (!this.classList.contains('touch-hover')) {
+                            cells.forEach(c => c.classList.remove('touch-hover'));
+                            this.classList.add('touch-hover');
+                            return; 
+                        } 
+                        // Secondo tocco: apre il dossier tecnico
+                        if (projectId) openModal(projectId);
+                    } else {
+                        // Comportamento Desktop: apre istantaneamente il dossier al click
+                        if (projectId) openModal(projectId);
+                    }
+                });
+            });
+        });
+
+        // DATI MODAL
+        const projectData = {
+            'aura': {
+                title: 'AURA',
+                category: '// DURAGREEN LIGHTING (UK) [2025]',
+                hasBadge: true,
+                layout: 'standard',
+                desc: `AURA is a study on the rhythmic translation of natural light into an indoor presence. Inspired by the shifting qualities of daylight, from the clarity of noon to the warmth of dusk, the project distills these atmospheric transitions into a balanced, timeless form.\n\nThe collection draws from a deep understanding of light’s power to define proportion and emotion. Through a process of reductive logic, every element has been refined to its essential purpose. The design integrates a high-performance, full-spectrum LED engine with a hand-selected alabaster diffuser, achieving a light quality that honors the material’s natural translucency.\n\nTechnical precision remains at the core of the aesthetic: a custom push-fit LED module and an integrated driver ensure seamless maintenance and a circular product lifecycle. AURA is not merely an object, but a quiet, structural presence that shapes the environment through craftsmanship and technical rigor.`,
+                images: ['img/aura1.png', 'img/aura2.png', 'img/aura3.png'],
+                fit: ['cover', 'contain', 'cover'], 
+                position: ['center', 'center', 'bottom left']
+            },
+            'bellazoom': {
+                title: 'BELLA ZOOM',
+                category: '// DURAGREEN LIGHTING (UK) [2024]',
+                hasBadge: true,
+                layout: 'standard',
+                desc: `Bella Zoom is a comprehensive architectural ecosystem designed to unify diverse lighting typologies under a single, rigorous design language. The core of the system is a high-precision optical platform that allows for seamless beam adjustment, from a concentrated 20° spot to a 50° wide wash, through a calibrated rotation of the frontal ring. This mechanical versatility grants designers absolute control over the luminous environment, enabling the light to adapt to the evolving needs of the space.\n\nThe collection spans across multiple applications, including track-mounted, recessed, surface, and decorative typologies (pendant, table, and floor). Despite the variety of scales and installations, the system maintains a strict formal continuity. Every element, from the outdoor bollards to the indoor track heads, shares the same aesthetic DNA and optical technology, ensuring visual silence and architectural coherence throughout the project.\n\nThe "Zoom" mechanism is not merely a functional feature but a tactile interaction with light itself. By eliminating the need for interchangeable lenses, Bella Zoom reduces material waste and simplifies on-site commissioning. Available in a curated range of finishes and color temperatures, the system integrates into high-end interiors and complex architectural contexts with surgical precision, embodying the perfect balance between performance and reductive logic.`,
+                images: ['img/bellazoom1.png', 'img/bellazoom2.png', 'img/bellazoom3.png'],
+                fit: ['cover', 'cover', 'cover'],
+                position: ['center', 'center', 'center']
+            },
+            'series04': {
+                title: 'SERIES 04',
+                category: '// ALMARJAN (UAE) [2026]',
+                hasBadge: false,
+                layout: 'standard',
+                desc: `SERIES 04 is a highly calibrated intersection between fluid containment and rationalist geometry. The architecture is defined by a dual-cone polygonal structure, a faceted volume engineered to fracture light into sharp, defined gradients. This aggressive geometric choice eradicates ornamental tradition, imposing an absolute structural purity.\n\nThe CMF strategy executes a precise balance of industrial matte metallics and tactile polymers. This calibration achieves a severe cross-cultural reductive logic, ensuring global market resonance without stylistic compromise. From the integrated, angular handle to the zero-tolerance molded spout, every detail is an exercise in continuous functionalism, stripping the vessel down to the pure physics of pouring and thermal retention.`,
+                images: ['img/Vacuum1.1.png', 'img/Vacuum1.2.png', 'img/Vacuum1.3.png'],
+                fit: ['cover', 'cover', 'cover'],
+                position: ['center', 'center', 'center']
+            },
+            'series03': {
+                title: 'SERIES 03',
+                category: '// ALMARJAN (UAE) [2025]',
+                hasBadge: false,
+                layout: 'standard',
+                desc: `SERIES 03 is a strict study in vertical tension and monolithic clarity. Engineered to transcend the traditional hospitality vessel, the architecture relies on the absolute precision of a truncated cone. This static volume is aggressively interrupted by the "Arch", a high-polished structural loop that emerges with surgical precision to serve as both a mechanical lever and a focal center of gravity.\n\nThe CMF protocol dictates a brutal contrast: a severe matte finish on the primary housing isolates the brilliance of the metallic extrusions. Every radius is calculated for load distribution and fluid dynamics, while the weighted base locks the object's stability. By eliminating superfluous ornamentation, Series 03 achieves a commanding spatial presence through pure material integrity and thermodynamic engineering.`,
+                images: ['img/Vacuum2.0.png', 'img/Vacuum2.2.png', 'img/Vacuum2.3.png'], 
+                fit: ['cover', 'cover', 'cover'],
+                position: ['center', 'center', 'center']
+            },
+            'series02': {
+                title: 'SERIES 02',
+                category: '// ALMARJAN (UAE) [2025]',
+                hasBadge: false,
+                layout: 'standard',
+                desc: `SERIES 02 is a severe exercise in continuous surfaces and volumetric synthesis. The architecture resolves fluid containment through calculated, organic transitions. A dominant, weighted base tapers into a highly controlled neck, an engineering decision that forcibly lowers the center of gravity to guarantee absolute physical stability during operation.\n\nThe handle is seamlessly integrated into the primary topography, generating a singular, uninterrupted structural flow. By manipulating light across variable radii through a high-contrast CMF palette, ranging from polished metals to high-density satins, the object translates complex ergonomics into pure spatial efficiency. The lid assembly and spout are flush-mounted into the organic shell, ensuring zero-tolerance thermal performance governed entirely by reductive logic.`,
+                images: ['img/Vacuum3.1.png', 'img/Vacuum3.2.png', 'img/Vacuum3.3.png'],
+                fit: ['cover', 'cover', 'cover'],
+                position: ['center', 'center', 'center']
+            },
+            'aperol': {
+                title: 'APEROL CORE',
+                category: '// QUINDICIZEROTRE FOR APEROL [2025]',
+                hasBadge: false,
+                layout: 'standard',
+                desc: `APEROL CORE is an uncompromising study in thermal isolation and calibrated fluid dynamics. Engineered for Quindicizerotre, the vessel fundamentally standardizes the preparation protocol, replacing manual inconsistency with a zero-tolerance architectural volume.\n\nThe system relies on a severe double-chamber structure. An internal isolation cylinder segregates the thermal mass (ice) from the fluid, completely eradicating dilution while locking exact thermodynamic parameters and carbonation levels. This is applied physics translating functional necessity into absolute visual clarity.\n\nThe external geometry integrates an engineered measurement index directly into the form. By converting technical calibration data into a pure graphic interface, it ensures a flawless execution of the 3-2-1 ratio. The aggressive contrast between the high-transparency body and the brand-specific CMF palette creates a technical asset tailored for high-end hospitality ecosystems. Every radius is validated for structural permanence, elevating a consumption ritual to a piece of exact industrial machinery.`,
+                images: ['img/Aperol1.png', 'img/Aperol2.png', 'img/Aperol3.png'],
+                fit: ['cover', 'cover', 'cover'],
+                position: ['center', 'center', 'center']
+            },
+            'kasanova': {
+                title: 'THERMAL FLUID TRAY',
+                category: '// KASANOVA (ITALY) [2025]',
+                hasBadge: false,
+                layout: 'standard',
+                desc: `Engineered for Smartpan and deployed at scale by KASANOVA, this silicone air-fryer tray is a study in thermodynamic optimization. The internal architecture features a calibrated ribbed topography designed to elevate ingredients, maximizing convective airflow while ensuring efficient fat drainage.\n\nManufactured from premium, high-temperature-resistant food-grade silicone, the structural geometry provides inherent rigidity, preventing the tray from collapsing during handling or thermal expansion. The reductive logic applied to this high-volume consumer product eliminates all superfluous styling, resulting in a strictly functional asset built for daily, intensive utility.`,
+                images: ['img/kasanova1.png', 'img/kasanova2.png', 'img/kasanova3.png'],
+                fit: ['cover', 'cover', 'cover'],
+                position: ['center', 'center', 'center']
+            },
+            'platano': {
+                title: 'PLATANO',
+                category: '// COLUME (ITALY) [2020]',
+                hasBadge: false,
+                layout: 'standard',
+                desc: `PLATANO is a floor lamp that translates organic rhythmic complexity into a strict modular industrial system. Engineered for Colume, the project is defined by a slender vertical axis around which a series of glass refractive elements are arranged in a calibrated spiral.\n\nThe structural integrity of the polished metal base provides a stark contrast to the optical quality of the modular glass discs. Each disc is meticulously sandblasted with engineered geometric patterns, transforming the glass into a refractive prism. When the integrated LED source at the base projects light upward, the entire vertical structure acts as an optical engine, projecting a complex radial mapping of light and shadow on the surrounding architecture.\n\nDesigned with absolute flexibility, the modular logic allows for infinite spatial configurations. The glass elements are available in a curated spectrum of technical finishes, enabling a bespoke interplay of refraction. Developed in collaboration with Mattia Pancani Bedini and Valentina Camozzi, Platano relies on a strict reductive logic: proving that profound atmospheric impact can be achieved through the precise calculation of light and structural matter.`,
+                images: ['img/platano1.png', 'img/platano2.png', 'img/platano3.png'],
+                fit: ['cover', 'cover', 'cover'],
+                position: ['center', 'center', 'center']
+            },
+            'paceiro': {
+                title: 'PACEIRO',
+                category: '// QUOKKA FLOW (SINGAPORE) [2022]',
+                hasBadge: false,
+                layout: 'standard',
+                desc: `PACEIRO is a high-performance ergonomic footrest engineered to redefine the structural quality of the modern workspace. Moving beyond purely utilitarian office accessories, the project introduces a bold, bridge-like geometry that establishes absolute stability and formal poise.\n\nConceived as a study in postural optimization, the dual-angled surface facilitates the natural alignment of the lower back, improving circulation during extended professional sessions. By focusing on the intersection of sharp planes and controlled radii, the design achieves a sense of graphic permanence. The non-slip surface is integrated within the primary volume with surgical precision, ensuring that functional requirements do not compromise the purity of the object.\n\nPrioritizing material density and tactile quality, PACEIRO rejects the plastic-dominated aesthetics of the market. This approach is the direct result of an uncompromising reductive logic. It is not merely an accessory, but a structural component of a high-end executive environment, built for professionals who demand exact functional standards.`,
+                images: ['img/quokka1.png', 'img/quokka2.png', 'img/quokka3.png'],
+                fit: ['cover', 'cover', 'cover'],
+                position: ['center', 'center', 'center']
+            },
+            'one': {
+                title: 'ONE',
+                category: '// BERGKVIST (GERMANY) [2022]',
+                hasBadge: false,
+                layout: 'two-images',
+                desc: `ONE is a high-performance tactical instrument engineered to eliminate the gap between traditional materiality and survival mechanics. Developed for Bergkvist, the architecture is built around a 10.5 cm 9CR18 stainless steel core, stripped of the aggressive styling typical of the sector in favor of a strictly linear, functional poise.\n\nThe structural geometry maximizes functional density. The skeletonized tang seamlessly integrates a line cutter, a glass breaker, and a carabiner mount within a single continuous profile. Every gram of material is calculated to serve a strict tactical requirement. The handle architecture is the result of extensive ergonomic engineering: the seasoned olive wood inserts are not decorative additions, but functional grip elements that optimize pressure distribution and provide natural anti-static feedback.\n\nPrecision-milled recesses and calibrated bolt placements align perfectly with the instrument's center of gravity, ensuring absolute structural stability under high-impact loads. Through a process of uncompromising reductive logic, ONE achieves "Sophisticated Resilience", proving that true professional-grade reliability is forged by eradicating the superfluous.`,
+                images: ['img/one1.png', 'img/one2.png'],
+                fit: ['contain', 'cover'], 
+                position: ['center', 'center']
+            }
+        };
+
+        function openModal(projectId) {
+            const data = projectData[projectId];
+            if(!data) return;
+
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalCategory').innerText = data.category;
+            document.getElementById('modalDesc').innerText = data.desc;
+            
+            const gridSystem = document.getElementById('modalGridSystem');
+            const botWrapper = document.getElementById('botWrapper');
+            
+            const img1 = document.getElementById('modalImg1');
+            const img2 = document.getElementById('modalImg2');
+            const img3 = document.getElementById('modalImg3');
+
+            // APPLICAZIONE LOGICA LAYOUT E RISOLUZIONE TAGLIO IMMAGINE
+            if (data.layout === 'two-images') {
+                gridSystem.classList.add('layout-two');
+                botWrapper.style.display = 'none';
+                
+                img1.src = data.images[0];
+                img2.src = data.images[1];
+                
+                img1.style.objectFit = data.fit[0]; img1.style.objectPosition = data.position[0];
+                img2.style.objectFit = data.fit[1]; img2.style.objectPosition = data.position[1];
+            } else {
+                gridSystem.classList.remove('layout-two');
+                botWrapper.style.display = 'block';
+                
+                img1.src = data.images[0];
+                img2.src = data.images[1];
+                img3.src = data.images[2];
+
+                img1.style.objectFit = data.fit[0]; img1.style.objectPosition = data.position[0];
+                img2.style.objectFit = data.fit[1]; img2.style.objectPosition = data.position[1];
+                img3.style.objectFit = data.fit[2]; img3.style.objectPosition = data.position[2];
+            }
+
+            const badge = document.getElementById('modalBadge');
+            if(data.hasBadge && data.layout !== 'two-images') { badge.style.display = 'block'; } else { badge.style.display = 'none'; }
+
+            document.getElementById('projectModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal() {
+            document.getElementById('projectModal').classList.remove('active');
+            document.body.style.overflow = 'auto'; 
+            
+            // RESET LAYOUT AL CHIUSURA
+            setTimeout(() => {
+                document.getElementById('modalGridSystem').classList.remove('layout-two');
+                document.getElementById('botWrapper').style.display = 'block';
+            }, 300);
+        }
+    </script>
+</body>
+</html>

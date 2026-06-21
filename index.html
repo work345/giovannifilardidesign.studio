@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Giovanni Filardi Design</title>
+    <meta name="description" content="Giovanni Filardi | Lead Industrial Designer. We engineer physical assets. Reductive logic dictates the tooling. Structural permanence dictates the lifespan. Torino, IT.">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* [ RESET E BASE ] */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* [ FLUSSO VERTICALE LIBERO - DEFAULT DESKTOP ] */
+        html { 
+            -webkit-overflow-scrolling: touch; 
+            scroll-behavior: smooth; 
+            /* scroll-snap-type: y mandatory; rimosso per dottrina di fluidità assoluta */
+        }
+        
+        body { 
+            background-color: #000; 
+            font-family: 'Clash Display', sans-serif; 
+            overflow-x: hidden; 
+            color: #fff; 
+            letter-spacing: 0.02em; 
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+
+            /* [ CURSORE INDUSTRIALE ] */
+            cursor: url('data:image/svg+xml;utf8,<svg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"><rect width="6" height="6" fill="%23ffffff"/></svg>') 3 3, auto;
+        }
+
+        a, button, .nav-arrow, .monolith-email {
+            cursor: url('data:image/svg+xml;utf8,<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" fill="none" stroke="%23ffffff" stroke-width="1.5"/></svg>') 5 5, pointer !important;
+        }
+
+        /* [ SCROLLBAR D'ÉLITE ] */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #000; border-left: 1px solid rgba(255, 255, 255, 0.10); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.45); border-radius: 0; transition: background 0.3s ease; }
+        ::-webkit-scrollbar-thumb:hover { background: #fff; }
+
+        /* [ PRECISION BOOT SEQUENCE ] */
+        #precision-boot {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+            pointer-events: none;
+        }
+        .boot-panel {
+            position: absolute; left: 0; width: 100%; height: 50vh;
+            background-color: #000; will-change: transform;
+            transition: transform 0.85s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        .top-panel { top: 0; transform-origin: top; }
+        .bottom-panel { bottom: 0; transform-origin: bottom; }
+        
+        .calibration-line {
+            position: absolute; top: 50%; left: 50%; width: 0; height: 1px;
+            background-color: #fff; transform: translate(-50%, -50%);
+            transition: width 0.5s cubic-bezier(0.86, 0, 0.07, 1), opacity 0.3s ease;
+            z-index: 2;
+        }
+        .calibration-data {
+            position: absolute; top: calc(50% - 25px); left: 50%; transform: translateX(-50%);
+            color: #fff; font-size: 0.65rem; font-family: 'Courier New', Courier, monospace;
+            letter-spacing: 0.25em; opacity: 0; transition: opacity 0.3s ease; z-index: 3;
+            white-space: nowrap; font-weight: 500;
+        }
+
+        .boot-active .calibration-line { width: 100vw; }
+        .boot-active .calibration-data { opacity: 1; }
+        
+        .boot-split .top-panel { transform: translateY(-100%); }
+        .boot-split .bottom-panel { transform: translateY(100%); }
+        .boot-split .calibration-line, .boot-split .calibration-data { opacity: 0; }
+
+        /* [ HEADER D'ÉLITE: EFFETTO CAMALEONTE ASSOLUTO ] */
+        .sys-header {
+            position: fixed; top: 0; left: 0; width: 100vw;
+            padding: 2.5vw; display: flex; justify-content: space-between;
+            align-items: center; z-index: 50; 
+            mix-blend-mode: difference; 
+            pointer-events: none; 
+        }
+        .sys-header > * { pointer-events: auto; }
+
+        .brand-logo { width: 120px; filter: invert(1); transition: opacity 0.3s ease; display: block; }
+        .brand-logo:hover { opacity: 0.7; }
+
+        .elite-nav { display: flex; gap: 3vw; }
+        .elite-nav a { color: #fff; text-decoration: none; font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0.5; }
+        .elite-nav a:hover, .elite-nav a.active { opacity: 1; letter-spacing: 0.15em; }
+
+        /* [ PAGINA 1: MANIFESTO VISIVO ] */
+        .page-one { min-height: 100vh; min-height: 100dvh; width: 100vw; position: relative; z-index: 10; background-color: #000; }
+        
+        /* [ FIDUCIAL ALIGNMENT MARKS ] */
+        .fiducial-mark {
+            position: absolute; width: 14px; height: 14px; pointer-events: none; z-index: 100;
+            opacity: 0.3; transition: all 0.2s ease;
+        }
+        .fiducial-mark::before {
+            content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: #fff; transform: translateY(-50%); transition: all 0.2s ease;
+        }
+        .fiducial-mark::after {
+            content: ''; position: absolute; top: 0; left: 50%; width: 1px; height: 100%; background: #fff; transform: translateX(-50%); transition: all 0.2s ease;
+        }
+        .fm-top-left { top: 2vw; left: 2vw; }
+        .fm-top-right { top: 2vw; right: 2vw; }
+        .fm-bot-left { bottom: 2vw; left: 2vw; }
+        .fm-bot-right { bottom: 2vw; right: 2vw; }
+
+        .fiducial-mark.flash-active { opacity: 1; filter: drop-shadow(0 0 6px #fff); }
+        .fiducial-mark.flash-active::before, .fiducial-mark.flash-active::after { background: #fff; box-shadow: 0 0 4px #fff; }
+
+        .manifesto-text { 
+            position: sticky; top: 50%; transform: translateY(-50%); 
+            text-align: center; font-size: clamp(1.2rem, 2.5vw, 3rem); 
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; 
+            z-index: 10; mix-blend-mode: difference;
+        }
+
+        .scroll-indicator {
+            position: absolute; bottom: 4vw; left: 50%; transform: translateX(-50%);
+            width: 28px; height: 44px; border: 2px solid rgba(255,255,255,0.6); border-radius: 22px;
+            z-index: 15; transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: none; mix-blend-mode: difference;
+            opacity: 0; 
+        }
+        .scroll-indicator::before {
+            content: ''; position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+            width: 3px; height: 8px; background-color: #fff; border-radius: 3px;
+            animation: scrollDrop 1.8s infinite cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .scroll-indicator.indicator-ready { opacity: 1; }
+        .scroll-indicator.indicator-ready.fade-out { opacity: 0 !important; }
+
+        @keyframes scrollDrop { 0% { transform: translate(-50%, 0); opacity: 1; } 100% { transform: translate(-50%, 16px); opacity: 0; } }
+
+        /* [ PAGINA 2: VOLUME LAYERED ] */
+        .volume-layered { min-height: 100vh; min-height: 100dvh; width: 100vw; position: relative; display: flex; align-items: center; justify-content: center; z-index: 10; background-color: #000; }
+        .bg-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+        .layered-text { position: relative; z-index: 3; width: 100%; max-width: 1000px; padding: 5vw; }
+        h2 { font-size: clamp(3rem, 7vw, 6rem); font-weight: 600; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.9; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8); }
+
+        /* [ PAGINA 3: CAROUSEL ORIZZONTALE ] */
+        .horizontal-wrapper { 
+            width: 100vw; height: 100vh; height: 100dvh; display: flex; overflow-x: auto; overflow-y: hidden; 
+            scroll-snap-type: x mandatory; 
+            -ms-overflow-style: none; scrollbar-width: none; 
+            position: relative; z-index: 10; 
+            overscroll-behavior-x: none; 
+            -webkit-overflow-scrolling: touch;
+        }
+        .horizontal-wrapper::-webkit-scrollbar { display: none; }
+        
+        .scroll-slide { 
+            min-width: 100vw; height: 100vh; height: 100dvh; scroll-snap-align: start; 
+            position: relative; display: flex; align-items: center; justify-content: center; background-color: #000;
+        }
+        .pure-image { 
+            width: 100%; height: 100%; object-fit: cover; display: block; 
+            position: absolute; top: 0; left: 0; z-index: 2; 
+        }
+        
+        /* HUD Sinistra */
+        .project-hud {
+            position: absolute; bottom: 2.5vw; left: 2.5vw; z-index: 15;
+            font-family: 'Courier New', Courier, monospace; font-size: 0.7rem;
+            letter-spacing: 0.15em; color: #fff; opacity: 0.8;
+            pointer-events: none; mix-blend-mode: difference;
+        }
+
+        /* ISTRUZIONE AVANZAMENTO */
+        .scroll-instruction {
+            position: absolute; bottom: 2.5vw; right: 2.5vw; z-index: 15;
+            font-family: 'Courier New', Courier, monospace; font-size: 0.7rem;
+            letter-spacing: 0.15em; color: #fff; text-decoration: none;
+            pointer-events: auto; 
+            mix-blend-mode: difference;
+            display: flex; align-items: center; gap: 8px;
+            opacity: 0; 
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .scroll-instruction.visible { opacity: 0.8; }
+        
+        .solid-white-instruction {
+            color: #fff !important;
+            mix-blend-mode: normal !important;
+            text-shadow: 0px 2px 10px rgba(0,0,0,0.9), 0px 0px 5px rgba(0,0,0,0.7) !important;
+        }
+        .solid-white-instruction.visible { opacity: 1 !important; }
+
+        .scroll-instruction svg {
+            width: 12px; height: 12px; stroke: currentColor; stroke-width: 2px; fill: none;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));
+            animation: microMechanicalPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes microMechanicalPulse {
+            0%, 100% { transform: translateY(0); opacity: 0.7; }
+            50% { transform: translateY(3px); opacity: 1; }
+        }
+
+        .badge-overlay { position: absolute; top: 1.5vw; right: 2.5vw; z-index: 15; pointer-events: none; }
+        .badge-overlay img { width: 95px; opacity: 0.9; }
+
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 15; color: #fff; mix-blend-mode: difference; cursor: pointer; width: 100px; height: 140px; display: flex; align-items: center; justify-content: center; }
+        .arrow-right { right: 1vw; } .arrow-left { left: 1vw; }
+        .nav-arrow svg { width: 38px; height: auto; stroke: currentColor; stroke-width: 1.5px; fill: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform, opacity; }
+        .arrow-right svg { animation: breatheRight 4s infinite ease-in-out; } .arrow-left svg { animation: breatheLeft 4s infinite ease-in-out; }
+        @keyframes breatheRight { 0%, 100% { transform: translateX(0); opacity: 0.5; } 50% { transform: translateX(8px); opacity: 1; } }
+        @keyframes breatheLeft { 0%, 100% { transform: translateX(0); opacity: 0.5; } 50% { transform: translateX(-8px); opacity: 1; } }
+        .nav-arrow:hover svg { animation: none; opacity: 1; transform: scale(1.1); }
+
+        /* [ PAGINA 4: FONDATORE ] */
+        .founder-manifesto { min-height: 100vh; min-height: 100dvh; width: 100vw; position: relative; display: flex; align-items: center; justify-content: flex-end; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.05); z-index: 10; background-color: #000; }
+        .founder-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: 15% bottom; z-index: 1; }
+        .readability-gradient { position: absolute; top: 0; right: 0; width: 50%; height: 100%; background: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.85) 100%); z-index: 2; }
+        
+        .founder-text { position: relative; z-index: 3; width: 100%; max-width: 340px; padding: 4vw 5vw; margin-right: 4vw; color: #fff; border-left: 1px solid rgba(255,255,255,0.15); }
+        
+        .elite-reveal { opacity: 0; transform: translateY(20px); transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; }
+        .elite-reveal.revealed { opacity: 1; transform: translateY(0); }
+
+        .tech-coords { font-size: 0.65rem; letter-spacing: 0.15em; opacity: 0.5; margin-bottom: 2rem; font-weight: 500; white-space: nowrap; }
+        .tech-heading { font-size: 0.75rem; letter-spacing: 0.2em; margin-bottom: 1rem; font-weight: 600; color: #fff; text-transform: uppercase; }
+        .founder-text p { font-size: clamp(0.75rem, 0.9vw, 0.95rem); font-weight: 400; line-height: 1.6; margin-bottom: 2rem; opacity: 0.75; letter-spacing: 0.04em; }
+
+        .cta-elite { display: inline-block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 4px; transition: all 0.3s ease; margin-top: 1rem; }
+        .cta-elite:hover { opacity: 1; border-bottom: 1px solid #fff; letter-spacing: 0.2em; }
+
+        /* [ PAGINA 5: MONOLITE NERO - DESKTOP ] */
+        .monolith-section { 
+            min-height: 80vh; min-height: 80dvh; width: 100vw; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            background-color: transparent; color: #fff; border-top: 1px solid rgba(255,255,255,0.05); 
+            position: relative; z-index: 10; 
+        }
+        .monolith-email { font-size: clamp(1rem, 1.8vw, 2.2rem); font-weight: 500; color: #fff; text-decoration: none; letter-spacing: 0.1em; position: relative; padding-bottom: 0.5rem; text-align: center; }
+        .monolith-email::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 1px; bottom: 0; left: 0; background-color: #fff; transform-origin: bottom right; transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1); }
+        .monolith-email:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+        .monolith-email:hover { opacity: 0.9; }
+
+        .monolith-footer { position: absolute; bottom: 4vw; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; opacity: 0.4; transition: opacity 0.4s ease; }
+        .monolith-section:hover .monolith-footer { opacity: 0.8; }
+        
+        .monolith-collaborations { 
+            font-size: 0.75rem; font-weight: 500; text-transform: uppercase; 
+            letter-spacing: 0.2em; text-align: center; max-width: 90vw; line-height: 1.6;
+        }
+        
+        .legal-info { display: flex; gap: 3vw; font-size: 0.65rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        /* Link Fotografo d'Élite */
+        .footer-link {
+            color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.3);
+            padding-bottom: 2px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap;
+        }
+        .footer-link:hover { border-bottom-color: #fff; color: #fff; }
+
+        /* [ OTTIMIZZAZIONE MOBILE ] */
+        @media (max-width: 768px) {
+            body { cursor: auto !important; } 
+            
+            /* GESTIONE SNAPPING MOBILE: Disattivato completamente per annullare lag di scroll iOS */
+            html { scroll-snap-type: none; }
+            .page-one, .volume-layered, .horizontal-wrapper, .founder-manifesto, .monolith-section {
+                scroll-snap-align: none; 
+            }
+            
+            .fiducial-mark { display: block; width: 10px; height: 10px; }
+            .fm-top-left { top: 3vw; left: 3vw; }
+            .fm-top-right { top: 3vw; right: 3vw; }
+            .fm-bot-left { bottom: 3vw; left: 3vw; }
+            .fm-bot-right { bottom: 3vw; right: 3vw; }
+
+            .sys-header { padding: 5vw; align-items: flex-start; }
+            .brand-logo { width: 90px; }
+            .elite-nav { gap: 4vw; margin-top: 1.4rem; }
+            .elite-nav a { font-size: 0.75rem; }
+            
+            .volume-layered { min-height: unset; height: 60dvh; }
+            .bg-image { object-position: center center; }
+            .horizontal-wrapper { height: 56.25vw; min-height: unset; overscroll-behavior-x: contain; }
+            .scroll-slide { height: 100%; min-height: unset; padding: 0; }
+            
+            .project-hud { bottom: 4vw; left: 4vw; font-size: 0.55rem; }
+            .scroll-instruction { display: none !important; } 
+            
+            .badge-overlay { top: 3vw; right: 4vw; margin-top: 0; }
+            .badge-overlay img { width: 70px; }
+            .nav-arrow { width: 12vw; }
+            .nav-arrow svg { width: 22px; stroke-width: 1.2px; opacity: 0.8; }
+            
+            .founder-manifesto { flex-direction: column; min-height: auto; justify-content: flex-start; border-top: none; }
+            .founder-bg { position: relative; height: 60vw; object-position: center bottom; }
+            .readability-gradient { display: none; } 
+            .elite-reveal { transition: opacity 2.2s cubic-bezier(0.16, 1, 0.3, 1), transform 2.2s cubic-bezier(0.16, 1, 0.3, 1); }
+            .founder-text { position: relative; width: 100%; max-width: 100%; padding: 12vw 5vw 15vw 5vw; margin: 0; border-left: none; border-top: 1px solid rgba(255,255,255,0.15); background-color: #000; }
+            .founder-text p { font-size: 0.95rem; }
+            .tech-heading { font-size: 0.85rem; }
+            .scroll-indicator { bottom: 8vw; width: 24px; height: 38px; border-width: 2px; }
+            
+            /* COMPRESSIONE E FISICA DELLA GRIGLIA PER MONOLITH SECTION */
+            .monolith-section { 
+                min-height: 60vh; min-height: 60dvh; 
+                display: grid; 
+                grid-template-rows: 1fr auto; 
+                justify-items: center; 
+                align-items: center; 
+                padding-bottom: 12vw; 
+            }
+            .monolith-email { 
+                align-self: center; 
+                font-size: 1.1rem; 
+                border-bottom: 1px solid rgba(255,255,255,0.3); 
+                padding-bottom: 0.2rem; 
+            }
+            .monolith-email::after { display: none; } 
+            .monolith-footer { 
+                position: relative; 
+                bottom: auto; 
+                gap: 2rem; 
+                padding: 0 5vw; 
+            }
+            .legal-info { flex-direction: column; align-items: center; gap: 0.8rem; text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .sys-header { padding: 6vw 5vw; align-items: flex-start; }
+            .elite-nav { gap: 3vw; margin-top: 1.2rem; }
+            .elite-nav a { font-size: 0.65rem; }
+            .layered-text h2 { font-size: 2.8rem; }
+            .manifesto-text { font-size: 1.2rem; }
+            .monolith-email { font-size: 0.95rem; }
+            .monolith-collaborations { font-size: 0.65rem; line-height: 1.5; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="precision-boot">
+        <div class="boot-panel top-panel"></div>
+        <div class="boot-panel bottom-panel"></div>
+        <div class="calibration-line"></div>
+        <div class="calibration-data">[ SYSTEM CALIBRATING ]</div>
+    </div>
+
+    <header class="sys-header">
+        <a href="index.html" class="logo-link">
+            <img src="img/logo.png" alt="Giovanni Filardi Logo" class="brand-logo">
+        </a>
+        <nav class="elite-nav">
+            <a href="index.html#manifesto" class="active">Manifesto</a>
+            <a href="archive.html">Archive</a>
+            <a href="studio.html">Studio</a>
+        </nav>
+    </header>
+
+    <div id="manifesto" class="page-one bg-black">
+        <div class="fiducial-mark fm-top-left"></div>
+        <div class="fiducial-mark fm-top-right"></div>
+        <div class="fiducial-mark fm-bot-left"></div>
+        <div class="fiducial-mark fm-bot-right"></div>
+
+        <div class="manifesto-text">giovannifilardidesign.studio</div>
+        <div class="scroll-indicator"></div>
+    </div>
+    
+    <div class="volume-layered">
+        <img src="img/25.10.06_Nanni x DuraGreen-109_H.jpg" class="bg-image" alt="Structural Detail">
+        <div class="layered-text">
+            <h2>Reductive Logic.<br>Structural Permanence.</h2>
+        </div>
+    </div>
+    
+    <div class="horizontal-wrapper">
+
+        <div class="scroll-slide" id="slide1">
+            <img src="img/Image1.png" class="pure-image" alt="Project 1 - AURA">
+            <div class="project-hud">[ AURA // MASS-PRODUCED ]</div>
+            
+            <a href="#studio-manifesto" class="scroll-instruction" onclick="event.preventDefault(); document.getElementById('studio-manifesto').scrollIntoView({behavior:'smooth'})">
+                [ PROCEED ]
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+            </a>
+
+            <div class="badge-overlay"><img src="img/badge1.png" alt="Darc Awards Shortlisted"></div>
+            <div class="nav-arrow arrow-right" onclick="scrollNext()"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="9 18 15 12 9 6" stroke-linejoin="miter" stroke-linecap="square"/></svg></div>
+        </div>
+        
+        <div class="scroll-slide" id="slide2">
+            <img src="img/Image2.png" class="pure-image" alt="Project 2 - BELLA ZOOM">
+            <div class="project-hud">[ BELLA ZOOM // MASS-PRODUCED ]</div>
+            
+            <a href="#studio-manifesto" class="scroll-instruction solid-white-instruction" onclick="event.preventDefault(); document.getElementById('studio-manifesto').scrollIntoView({behavior:'smooth'})">
+                [ PROCEED ]
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+            </a>
+            
+            <div class="badge-overlay"><img src="img/badge1.png" alt="Darc Awards Shortlisted"></div>
+            <div class="nav-arrow arrow-left" onclick="scrollPrev()"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6" stroke-linejoin="miter" stroke-linecap="square"/></svg></div>
+            <div class="nav-arrow arrow-right" onclick="scrollNext()"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="9 18 15 12 9 6" stroke-linejoin="miter" stroke-linecap="square"/></svg></div>
+        </div>
+        
+        <div class="scroll-slide" id="slide3">
+            <img src="img/Image3.png" class="pure-image" alt="Project 3 - SERIES 04">
+            <div class="project-hud">[ SERIES 04 // MASS-PRODUCED ]</div>
+            
+            <a href="#studio-manifesto" class="scroll-instruction" onclick="event.preventDefault(); document.getElementById('studio-manifesto').scrollIntoView({behavior:'smooth'})">
+                [ PROCEED ]
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+            </a>
+
+            <div class="nav-arrow arrow-left" onclick="scrollPrev()"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6" stroke-linejoin="miter" stroke-linecap="square"/></svg></div>
+            <div class="nav-arrow arrow-right" onclick="scrollNext()"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="9 18 15 12 9 6" stroke-linejoin="miter" stroke-linecap="square"/></svg></div>
+        </div>
+        
+        <div class="scroll-slide" id="slide4">
+            <img src="img/Image4.png" class="pure-image" alt="Project 4 - ONE Knife">
+            <div class="project-hud">[ ONE // MASS-PRODUCED ]</div>
+
+            <a href="#studio-manifesto" class="scroll-instruction" onclick="event.preventDefault(); document.getElementById('studio-manifesto').scrollIntoView({behavior:'smooth'})">
+                [ PROCEED ]
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+            </a>
+
+            <div class="nav-arrow arrow-left" onclick="scrollPrev()"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="15 18 9 12 15 6" stroke-linejoin="miter" stroke-linecap="square"/></svg></div>
+        </div>
+    </div>
+    
+    <div id="studio-manifesto" class="founder-manifesto">
+        <img src="img/25.10.06_Nanni x DuraGreen-004_H.jpg" class="founder-bg" alt="Giovanni Filardi - Structural Permanence">
+        <div class="readability-gradient"></div>
+        <div class="founder-text">
+            <div class="tech-coords elite-reveal">[ 45.07°N 7.68°E // TORINO, IT ]</div>
+            <div class="tech-heading elite-reveal">// MANUFACTURING DOCTRINE</div>
+            <p class="elite-reveal">We reject theoretical design. We engineer physical assets.<br>Our process forces raw materials into <span style="white-space: nowrap;">market-ready</span> production lines.</p>
+            <p class="elite-reveal">Reductive logic dictates the tooling.<br>Structural permanence dictates the lifespan.</p>
+            <p class="elite-reveal">Zero decoration.<br>Absolute manufacturing truth.</p>
+            <a href="mailto:WORK@GIOVANNIFILARDIDESIGN.STUDIO?subject=Inquiry:%20Studio%20Availability" class="cta-elite elite-reveal">REQUEST STUDIO AVAILABILITY ↗</a>
+        </div>
+    </div>
+
+    <div id="studio" class="monolith-section">
+        <a href="mailto:WORK@GIOVANNIFILARDIDESIGN.STUDIO?subject=Inquiry:%20Studio%20Availability" class="monolith-email">WORK@GIOVANNIFILARDIDESIGN.STUDIO</a>
+        <div class="monolith-footer">
+            <div class="monolith-collaborations">
+                SELECTED COLLABORATIONS: APEROL / PAMPERO / KASANOVA / SMEG / DURAGREEN LIGHTING / ALMARJAN / BERGKVIST
+            </div>
+            <div class="legal-info">
+                <span>&copy; 2026 GIOVANNI FILARDI DESIGN</span>
+                <span>PORTRAIT PHOTOGRAPHY: <a href="https://www.instagram.com/federico.lano/" target="_blank" rel="noopener noreferrer" class="footer-link">FEDERICO LANO ↗</a></span>
+                <span>TORINO, ITALY // VAT ID 12452260016</span>
+                <span>ALL RIGHTS RESERVED</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bootContainer = document.getElementById('precision-boot');
+            const calibData = document.querySelector('.calibration-data');
+            const scrollInd = document.querySelector('.scroll-indicator');
+            
+            const fMarks = [
+                document.querySelector('.fm-top-left'),
+                document.querySelector('.fm-bot-left'),
+                document.querySelector('.fm-bot-right'),
+                document.querySelector('.fm-top-right')
+            ];
+
+            const isDesktop = window.innerWidth > 768;
+            
+            // TIMING DEL BOOT: Differenziato e allungato per i dispositivi mobile
+            const bootSplitDelay = isDesktop ? 1200 : 1800; 
+            const bootRemoveDelay = isDesktop ? 2200 : 3200;
+            const textDelay1 = isDesktop ? 200 : 400;
+            const textDelay2 = isDesktop ? 500 : 1000;
+
+            // Transizione dei pannelli neri più lenta su mobile
+            document.querySelectorAll('.boot-panel').forEach(panel => {
+                panel.style.transitionDuration = isDesktop ? '1.2s' : '1.8s';
+            });
+
+            setTimeout(() => {
+                bootContainer.classList.add('boot-active');
+                
+                setTimeout(() => { calibData.innerText = "[ TOLERANCE: 0.05mm ]"; }, textDelay1);
+
+                setTimeout(() => {
+                    calibData.innerText = "[ AXIS LOCKED ]";
+                    calibData.style.fontWeight = "700";
+                    calibData.style.color = "#fff";
+                }, textDelay2);
+
+                setTimeout(() => {
+                    bootContainer.classList.add('boot-split');
+                }, bootSplitDelay);
+
+                setTimeout(() => {
+                    bootContainer.remove();
+                    fMarks.forEach((mark, index) => {
+                        if (mark) {
+                            setTimeout(() => {
+                                mark.classList.add('flash-active');
+                                setTimeout(() => { mark.classList.remove('flash-active'); }, 300);
+                            }, index * 150);
+                        }
+                    });
+
+                    setTimeout(() => {
+                        scrollInd.classList.add('indicator-ready');
+                    }, (fMarks.length * 150) + 300);
+
+                }, bootRemoveDelay);
+            }, 100);
+        });
+
+        const carousel = document.querySelector('.horizontal-wrapper');
+        let autoScrollTimer = null; 
+        const scrollTime = 5500; 
+
+        function scrollNext() {
+            if (!carousel) return;
+            if (carousel.scrollLeft + window.innerWidth >= carousel.scrollWidth - 10) {
+                carousel.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                carousel.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+            }
+        }
+        
+        function scrollPrev() { 
+            if (!carousel) return;
+            carousel.scrollBy({ left: -window.innerWidth, behavior: 'smooth' }); 
+        }
+
+        function startAutoScroll() {
+            if (autoScrollTimer === null) {
+                autoScrollTimer = setInterval(scrollNext, scrollTime);
+            }
+        }
+        
+        function stopAutoScroll() {
+            if (autoScrollTimer !== null) {
+                clearInterval(autoScrollTimer);
+                autoScrollTimer = null;
+            }
+        }
+
+        if(carousel) {
+            carousel.addEventListener('mouseenter', stopAutoScroll);
+            carousel.addEventListener('mouseleave', startAutoScroll);
+            carousel.addEventListener('touchstart', stopAutoScroll);
+            carousel.addEventListener('touchend', startAutoScroll);
+        }
+
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        window.addEventListener('scroll', () => {
+            if (!scrollIndicator) return;
+            if (window.scrollY > 50) {
+                scrollIndicator.classList.add('fade-out');
+            } else {
+                scrollIndicator.classList.remove('fade-out');
+            }
+        });
+
+        const founderObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const reveals = entry.target.querySelectorAll('.elite-reveal');
+                    const delay = window.innerWidth <= 768 ? 550 : 350;
+                    reveals.forEach((el, index) => {
+                        setTimeout(() => {
+                            el.classList.add('revealed');
+                        }, index * delay); 
+                    });
+                    founderObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.4, rootMargin: "0px" }); 
+
+        const founderManifesto = document.querySelector('.founder-manifesto');
+        if(founderManifesto) founderObserver.observe(founderManifesto);
+
+        let hasCarouselStarted = false;
+        const carouselObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasCarouselStarted) {
+                    startAutoScroll(); 
+                    hasCarouselStarted = true;
+                }
+            });
+        }, { threshold: 0.2 }); 
+
+        if (carousel) carouselObserver.observe(carousel);
+
+        const slideObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const instruction = entry.target.querySelector('.scroll-instruction');
+                if (!instruction) return;
+
+                if (entry.isIntersecting) {
+                    entry.target.instructionTimer = setTimeout(() => {
+                        instruction.classList.add('visible');
+                    }, 3000); 
+                } else {
+                    clearTimeout(entry.target.instructionTimer);
+                    instruction.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0.85 }); 
+
+        const slides = document.querySelectorAll('.scroll-slide');
+        slides.forEach(slide => slideObserver.observe(slide));
+
+    </script>
+</body>
+</html>
