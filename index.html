@@ -14,7 +14,7 @@
       gtag('config', 'G-NR3BDP9F4K');
     </script>
 
-    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link class="cl-applied" rel="icon" type="image/png" href="img/favicon.png">
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -68,8 +68,8 @@
         .desktop-video { display: block; }
         .mobile-video { display: none; }
         
-        #boot-video-desktop { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; transform: scale(1.06); pointer-events: none; }
-        #boot-video-mobile { width: 100%; height: 100%; object-fit: cover; object-position: center center; transform: scale(1.08); pointer-events: none; }
+        #boot-video-desktop { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; transform: scale(1.06); }
+        #boot-video-mobile { width: 100%; height: 100%; object-fit: cover; object-position: center center; transform: scale(1.08); }
 
         .boot-logo { position: absolute; top: 2.5vw; left: 2.5vw; width: 120px; z-index: 25; filter: invert(1); mix-blend-mode: difference; transition: opacity 0.3s ease; }
         
@@ -170,15 +170,6 @@
             transform: rotate(45deg); 
         }
 
-        @keyframes sysFadeLeft {
-            0% { opacity: 0; transform: translateX(-15px) translateZ(0); }
-            100% { opacity: 1; transform: translateX(0) translateZ(0); }
-        }
-        @keyframes sysFadeRight {
-            0% { opacity: 0; transform: translateX(15px) translateZ(0); }
-            100% { opacity: 1; transform: translateX(0) translateZ(0); }
-        }
-
         /* ==========================================================================
            [ OVERLAY NAVIGAZIONE ]
            ========================================================================== */
@@ -200,8 +191,6 @@
         #sysNavOverlay.active {
             transform: translateY(0);
         }
-
-        .menu-top-pulse { display: none; }
 
         .sys-nav-row {
             flex: 1; 
@@ -422,7 +411,8 @@
             .sys-header { padding: 5vw; align-items: center; } 
             .brand-logo { width: 90px; }
             
-            .sys-trigger-wrapper { gap: 4vw; }
+            .sys-trigger-wrapper { gap: 4vw; align-items: center; }
+            .sys-active-page { font-size: 0.75rem; line-height: 1; }
             .sys-index-trigger { font-size: 0.75rem; padding: 0; transform-origin: center right; }
             
             #sysNavOverlay { padding-top: 15vh; padding-bottom: 5vh; }
@@ -452,7 +442,7 @@
             .founder-bg { position: relative; height: 60vw; object-position: center bottom; } .readability-gradient { display: none; } 
             .founder-text { position: relative; width: 100%; max-width: 100%; padding: 12vw 5vw 15vw 5vw; margin: 0; border-left: none; border-top: 1px solid rgba(255,255,255,0.15); background-color: #000; }
             
-            .hud-section { padding: 15vw 5vw; height: auto; min-height: auto; }
+            .hud-section { padding: 15vw 5vw; height: auto; min-height: auto; border-top: none; }
             .hud-wrapper { display: flex; flex-direction: column; gap: 0; width: 100%; }
             .hud-contact { order: 1; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12vw 0; position: relative; } 
             .hud-clients { order: 2; align-items: center; text-align: center; padding: 12vw 0; border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; } 
@@ -485,8 +475,8 @@
 
     <div id="precision-boot">
         <div class="video-container">
-            <video id="boot-video-desktop" class="desktop-video" src="img/video1.mp4" autoplay muted playsinline preload="auto"></video>
-            <video id="boot-video-mobile" class="mobile-video" src="img/video2.mp4" autoplay muted playsinline preload="auto"></video>
+            <video id="boot-video-desktop" class="desktop-video" src="img/video1.mp4" autoplay muted playsinline webkit-playsinline preload="auto"></video>
+            <video id="boot-video-mobile" class="mobile-video" src="img/video2.mp4" autoplay muted playsinline webkit-playsinline preload="auto"></video>
             <img src="img/logo.png" class="boot-logo" alt="Giovanni Filardi Logo">
             <img src="img/badge1.png" class="boot-badge" alt="Darc Awards Shortlisted">
         </div>
@@ -495,8 +485,6 @@
     </div>
 
     <div id="sysNavOverlay">
-        
-        <div class="menu-top-pulse"></div>
         
         <a href="index.html#manifesto" class="sys-nav-row" onclick="toggleSysNav()">
             <span class="nav-row-number">01</span>
@@ -689,7 +677,7 @@
     </div>
 
     <script>
-        // [ SYS.DATA ENGINE: TOPOLOGY AUTO-CENTERING ]
+        // [ THREE.JS ENGINE ]
         let techMaterial;
         async function initSysData() {
             const container = document.getElementById('topology-canvas');
@@ -750,7 +738,7 @@
             }
         }
 
-        // [ LOGICA DI BOOT RE-INTRODOTTA AD OGNI CARICAMENTO ]
+        // [ LOGICA DI BOOT INTEGRATA E COERCITIVA CONTRO I BLOCCHI MOBILE ]
         document.addEventListener('DOMContentLoaded', () => {
             const bootContainer = document.getElementById('precision-boot');
             const desktopVideo = document.getElementById('boot-video-desktop');
@@ -798,20 +786,85 @@
                 }, 1300);
             }
 
+            // Fallback temporale di sicurezza assoluto (sblocca comunque il sito se la rete è lenta)
             setTimeout(clearBootSequence, 4800);
             
-            if(desktopVideo) desktopVideo.addEventListener('ended', clearBootSequence);
-            if(mobileVideo) mobileVideo.addEventListener('ended', clearBootSequence);
+            // [ VIDEO BOOT — MOBILE / DESKTOP ROBUST AUTOPLAY ]
+            // Riproduce soltanto il video pertinente al dispositivo.
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            const activeVideo = isMobile ? mobileVideo : desktopVideo;
+            const inactiveVideo = isMobile ? desktopVideo : mobileVideo;
 
-            const cutOffset = 0.15;
-            if(desktopVideo) {
-                desktopVideo.addEventListener('timeupdate', () => {
-                    if(desktopVideo.duration && desktopVideo.currentTime >= desktopVideo.duration - cutOffset) clearBootSequence();
-                });
+            // Evita che il browser tenti di caricare/riprodurre inutilmente il video non visibile.
+            if (inactiveVideo) {
+                inactiveVideo.pause();
+                inactiveVideo.removeAttribute('autoplay');
             }
-            if(mobileVideo) {
-                mobileVideo.addEventListener('timeupdate', () => {
-                    if(mobileVideo.duration && mobileVideo.currentTime >= mobileVideo.duration - cutOffset) clearBootSequence();
+
+            if (activeVideo) {
+                // Imposta esplicitamente le proprietà richieste per l'autoplay mobile.
+                activeVideo.muted = true;
+                activeVideo.defaultMuted = true;
+                activeVideo.playsInline = true;
+                activeVideo.autoplay = true;
+                activeVideo.removeAttribute('controls');
+
+                let playbackStarted = false;
+                let retryAttempted = false;
+
+                const startPlayback = () => {
+                    if (bootCleared || playbackStarted) return;
+
+                    const playPromise = activeVideo.play();
+
+                    if (playPromise !== undefined) {
+                        playPromise
+                            .then(() => {
+                                playbackStarted = true;
+                            })
+                            .catch((error) => {
+                                console.warn('Autoplay blocked or unavailable:', error);
+
+                                // Se il browser vieta esplicitamente l'autoplay, salta il boot
+                                // invece di lasciare un pulsante Play nativo al centro dello schermo.
+                                if (error && error.name === 'NotAllowedError') {
+                                    clearBootSequence();
+                                }
+                                // Per errori di caricamento/transizione, il listener canplay
+                                // effettuerà un solo secondo tentativo prima del fallback temporale.
+                            });
+                    }
+                };
+
+                // Primo tentativo immediato.
+                startPlayback();
+
+                // Secondo tentativo unico quando il browser ha dati sufficienti.
+                activeVideo.addEventListener('canplay', () => {
+                    if (!playbackStarted && !retryAttempted && !bootCleared) {
+                        retryAttempted = true;
+                        startPlayback();
+                    }
+                }, { once: true });
+
+                // Se parte davvero, nasconde qualsiasi eventuale UI nativa residua.
+                activeVideo.addEventListener('playing', () => {
+                    playbackStarted = true;
+                    activeVideo.removeAttribute('controls');
+                }, { once: true });
+
+                // Fine naturale del video.
+                activeVideo.addEventListener('ended', clearBootSequence);
+
+                // Chiusura leggermente anticipata per una transizione più pulita.
+                const cutOffset = 0.15;
+                activeVideo.addEventListener('timeupdate', () => {
+                    if (
+                        activeVideo.duration &&
+                        activeVideo.currentTime >= activeVideo.duration - cutOffset
+                    ) {
+                        clearBootSequence();
+                    }
                 });
             }
         });
