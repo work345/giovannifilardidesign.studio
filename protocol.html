@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Protocol | Giovanni Filardi Design</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NR3BDP9F4K"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NR3BDP9F4K');
+    </script>
+
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* [ RESET E BASE ] */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        body { 
+            background-color: #000; font-family: 'Clash Display', sans-serif; overflow-x: hidden; color: #fff; 
+            letter-spacing: 0.02em; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+            cursor: url('data:image/svg+xml;utf8,<svg width="6" height="6" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg"><rect width="6" height="6" fill="%23ffffff"/></svg>') 3 3, auto;
+        }
+
+        a, button, .sys-index-trigger, .sys-nav-row, .hud-email {
+            cursor: url('data:image/svg+xml;utf8,<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect width="10" height="10" fill="none" stroke="%23ffffff" stroke-width="1.5"/></svg>') 5 5, pointer !important;
+        }
+
+        /* [ SCROLLBAR D'ÉLITE ] */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #000; border-left: 1px solid rgba(255, 255, 255, 0.10); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.45); border-radius: 0; transition: background 0.3s ease; }
+        ::-webkit-scrollbar-thumb:hover { background: #fff; }
+
+        /* [ FIDUCIAL ALIGNMENT MARKS ] */
+        .fiducial-mark { position: fixed; width: 14px; height: 14px; pointer-events: none; z-index: 10; opacity: 0.3; transition: opacity 0.3s ease; }
+        .fiducial-mark::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: #fff; transform: translateY(-50%); }
+        .fiducial-mark::after { content: ''; position: absolute; top: 0; left: 50%; width: 1px; height: 100%; background: #fff; transform: translateX(-50%); }
+        .fm-top-left { top: 2.5vw; left: 2.5vw; } .fm-top-right { top: 2.5vw; right: 2.5vw; }
+        .fm-bot-left { bottom: 2.5vw; left: 2.5vw; } .fm-bot-right { bottom: 2.5vw; right: 2.5vw; }
+
+        /* [ HEADER D'ÉLITE UNIFICATO ] */
+        .sys-header {
+            position: fixed;
+            top: 0; left: 0; 
+            width: 100%; 
+            padding: 2.5vw;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            z-index: 1000; 
+            mix-blend-mode: difference;
+            pointer-events: none; 
+        }
+        .sys-header > * { pointer-events: auto; }
+
+        .brand-logo { 
+            width: 120px; filter: invert(1); transition: opacity 0.3s ease; display: block; 
+            will-change: transform, opacity;
+            animation: sysFadeLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .brand-logo:hover { opacity: 0.7; }
+
+        .sys-trigger-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 2vw;
+            animation: sysFadeRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .sys-active-page {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .sys-index-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Clash Display', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            color: #fff;
+            text-transform: uppercase;
+            background: transparent;
+            border: none;
+            padding: 0; 
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center right;
+        }
+        
+        #triggerText {
+            line-height: 1;
+            transition: letter-spacing 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .sys-index-trigger svg {
+            display: block;
+            width: 14px; height: 14px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sys-index-trigger:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255,255,255,0.9);
+            transform: scale(1.04);
+        }
+        .sys-index-trigger:hover #triggerText {
+            letter-spacing: 0.12em;
+        }
+
+        .sys-index-trigger.open-state { color: #fff; }
+        .sys-index-trigger.open-state svg { transform: rotate(45deg); }
+
+        @keyframes sysFadeLeft { 0% { opacity: 0; transform: translateX(-15px) translateZ(0); } 100% { opacity: 1; transform: translateX(0) translateZ(0); } }
+        @keyframes sysFadeRight { 0% { opacity: 0; transform: translateX(15px) translateZ(0); } 100% { opacity: 1; transform: translateX(0) translateZ(0); } }
+
+        /* ==========================================================================
+           [ OVERLAY NAVIGAZIONE ]
+           ========================================================================== */
+        #sysNavOverlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh; height: 100dvh;
+            background-color: #000;
+            z-index: 900; 
+            display: flex;
+            flex-direction: column;
+            transform: translateY(-100%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            padding-top: 12vh; 
+            padding-bottom: 4vh;
+            background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 5vw);
+        }
+        #sysNavOverlay.active { transform: translateY(0); }
+        .sys-nav-row { flex: 1; display: flex; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 0 5vw; position: relative; text-decoration: none; overflow: hidden; transition: background-color 0.1s ease; }
+        .sys-nav-row:last-child { border-bottom: none; }
+        .nav-row-number { font-family: 'Courier New', Courier, monospace; font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-right: 3vw; letter-spacing: 0.2em; position: relative; z-index: 2; transition: color 0.1s ease; }
+        .nav-row-title { font-family: 'Clash Display', sans-serif; font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.02em; position: relative; z-index: 2; transition: color 0.1s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .nav-row-ticker { position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 100%; white-space: nowrap; font-family: 'Courier New', Courier, monospace; font-size: clamp(1rem, 2vw, 2rem); font-weight: 600; letter-spacing: 0.1em; color: rgba(0,0,0,0.1); z-index: 1; opacity: 0; pointer-events: none; }
+        .ticker-track { display: inline-block; padding-left: 100%; animation: tickerScroll 15s linear infinite; }
+        @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        @media (hover: hover) and (pointer: fine) {
+            .sys-nav-row:hover { background-color: #fff; }
+            .sys-nav-row:hover .nav-row-number { color: rgba(0,0,0,0.4); }
+            .sys-nav-row:hover .nav-row-title { color: #000; transform: translateX(2vw); }
+            .sys-nav-row:hover .nav-row-ticker { opacity: 1; }
+        }
+        .sys-nav-row:active { background-color: #fff; }
+        .sys-nav-row:active .nav-row-number { color: rgba(0,0,0,0.4); }
+        .sys-nav-row:active .nav-row-title { color: #000; transform: translateX(2vw); }
+        .sys-nav-row:active .nav-row-ticker { opacity: 1; }
+
+        /* ==========================================================================
+           [ PROTOCOL MATRIX (2x2 GRID) ]
+           ========================================================================== */
+        .protocol-wrapper {
+            width: 100vw;
+            padding: 12vw 4vw 6vw 4vw;
+            display: flex;
+            flex-direction: column;
+            gap: 2vw;
+            background: #000;
+        }
+
+        .protocol-main-title {
+            font-size: clamp(1rem, 1.5vw, 1.5rem);
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: #fff;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            padding-bottom: 1rem;
+            margin-bottom: 3vw;
+        }
+
+        /* COSTRUZIONE EDITORIALE CON CONTRASTO GRIGIO DI SISTEMA E BIANCO */
+        .protocol-header-block {
+            max-width: 1100px;
+            padding-left: 2.5vw;
+            border-left: 1px solid rgba(255,255,255,0.25);
+            margin-bottom: 5vw;
+            animation: sysFadeLeft 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .protocol-elite-statement {
+            font-family: 'Clash Display', sans-serif;
+            font-size: clamp(1.4rem, 2.5vw, 2.8rem);
+            font-weight: 400;
+            line-height: 1.3;
+            letter-spacing: 0.01em;
+            color: rgba(255, 255, 255, 0.5); /* Grigio coordinato */
+            text-transform: uppercase;
+        }
+        
+        /* Focus mirato bianco puro sul core del blocco */
+        .protocol-core-focus {
+            color: #fff;
+            font-weight: 600;
+            text-shadow: 0 0 15px rgba(255,255,255,0.15);
+        }
+
+        .protocol-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Matrice 2x2 */
+            gap: 1px; 
+            background: rgba(255,255,255,0.12); 
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .protocol-module {
+            background: #000;
+            padding: 4vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .focus-glow {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.04) 0%, transparent 70%);
+            opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
+        }
+        .protocol-module:hover .focus-glow { opacity: 1; }
+        .protocol-module:hover { background-color: #050505; }
+
+        .pm-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5vw;
+        }
+
+        .pm-num {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .pm-title {
+            font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            line-height: 1.1;
+            color: #fff;
+        }
+
+        .pm-desc {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.45); 
+            text-transform: uppercase;
+        }
+
+        .pm-highlight {
+            color: #fff;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255,255,255,0.25);
+        }
+
+        /* ==========================================================================
+           [ HUD FOOTER SECTION ]
+           ========================================================================== */
+        .hud-section { 
+            min-height: 85vh; min-height: 85dvh; width: 100vw; 
+            background-color: #000; color: #fff; 
+            border-top: 1px solid rgba(255,255,255,0.05); position: relative; z-index: 10;
+            display: flex; flex-direction: column; justify-content: center;
+            font-family: 'Courier New', Courier, monospace; padding: 6vw 4vw; overflow: hidden;
+        }
+
+        .hud-section::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 4vw 4vw; z-index: 1; pointer-events: none;
+        }
+
+        .hud-wrapper { position: relative; z-index: 2; width: 100%; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 6vw; align-items: center; }
+        .hud-block { display: flex; flex-direction: column; gap: 1.2rem; }
+        .hud-clients { text-align: right; align-items: flex-end; }
+        
+        .hud-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; color: rgba(255,255,255,0.4); text-transform: uppercase; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; }
+        .hud-data { font-size: 0.75rem; font-weight: 400; letter-spacing: 0.1em; line-height: 1.8; text-transform: uppercase; }
+        .hud-data span { color: rgba(255,255,255,0.5); }
+        .hud-data-value { color: #fff !important; }
+        
+        .network-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 30px; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.15em; color: #fff; text-align: right; width: 100%; }
+        .network-grid span { transition: all 0.3s ease; }
+        .network-grid span:hover { text-shadow: 0 0 8px rgba(255,255,255,0.8); }
+
+        .core-function { text-align: center; border: 1px solid rgba(255,255,255,0.1); padding: 5vw 2vw; position: relative; background: rgba(255,255,255,0.01); }
+        .core-label { font-size: 0.7rem; letter-spacing: 0.3em; margin-bottom: 2rem; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+        
+        .hud-email { display: inline-block; font-family: 'Clash Display', sans-serif; font-size: clamp(1rem, 1.8vw, 2.2rem); font-weight: 500; color: #fff; text-decoration: none; letter-spacing: 0.05em; position: relative; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); padding-bottom: 0.8rem; }
+        .hud-email::after { content: ''; position: absolute; left: 50%; bottom: 0; width: 0; height: 1px; background: #fff; transform: translateX(-50%); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 0 10px rgba(255,255,255,0.8); }
+        .hud-email:hover { letter-spacing: 0.15em; text-shadow: 0 0 20px rgba(255,255,255,0.6); }
+        .hud-email:hover::after { width: 100%; }
+
+        .sys-status { margin-top: 2rem; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 0.15em; text-transform: uppercase; }
+        .awaiting-link { color: #fff; text-decoration: none; transition: text-shadow 0.3s ease; pointer-events: auto; }
+        .awaiting-link:hover { text-shadow: 0 0 12px rgba(255,255,255,1); }
+        
+        .blinking-cursor { display: inline-block; width: 6px; height: 12px; background: rgba(255,255,255,0.7); animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 4px;}
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .hud-bottom-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; margin-top: 6vw; position: relative; z-index: 2; }
+        .hud-bottom-bar span, .hud-bottom-bar a { font-size: 0.65rem; letter-spacing: 0.15em; color: rgba(255, 255, 255, 0.4); text-decoration: none; transition: color 0.3s ease; }
+        .hud-bottom-bar a:hover { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.8); }
+        .hud-bottom-center { display: flex; gap: 4vw; }
+
+        .social-nodes { display: flex; gap: 1.5rem; align-items: center; }
+        .social-node svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: square; stroke-linejoin: miter; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .social-node:hover svg { filter: drop-shadow(0 0 8px rgba(255,255,255,1)); transform: scale(1.15); }
+
+        /* PULSES DESKTOP */
+        .pulse-horizontal { position: absolute; top: -1px; left: 0; width: 80px; height: 1px; background: #fff; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); animation: pulseX 5s infinite cubic-bezier(0.7, 0, 0.3, 1); opacity: 0; z-index: 10; }
+        @keyframes pulseX { 0% { left: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: calc(100% - 80px); opacity: 0; } }
+        
+        .pulse-vertical { position: absolute; bottom: 0; left: -1px; width: 1px; height: 80px; background: #fff; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); animation: pulseYUp 5s infinite cubic-bezier(0.7, 0, 0.3, 1); opacity: 0; z-index: 10; }
+        @keyframes pulseYUp { 0% { bottom: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { bottom: calc(100% - 80px); opacity: 0; } }
+
+        .pulse-vertical-right { position: absolute; top: 0; right: -1px; width: 1px; height: 80px; background: #fff; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); animation: pulseYDown 5s infinite cubic-bezier(0.7, 0, 0.3, 1); opacity: 0; z-index: 10; }
+        @keyframes pulseYDown { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: calc(100% - 80px); opacity: 0; } }
+
+        /* [ MOBILE OPTIMIZATION ] */
+        .mobile-pulse { display: none; }
+
+        @media (max-width: 768px) { 
+            .fiducial-mark { display: none; }
+            
+            .sys-header { padding: 5vw; align-items: center; } 
+            .brand-logo { width: 90px; }
+            
+            .sys-trigger-wrapper { gap: 4vw; align-items: center; }
+            .sys-active-page { font-size: 0.75rem; line-height: 1; }
+            .sys-index-trigger { font-size: 0.75rem; padding: 0; transform-origin: center right; display: inline-flex; align-items: center; }
+            
+            #sysNavOverlay { padding-top: 15vh; padding-bottom: 5vh; }
+            .sys-nav-row { padding: 0 6vw; }
+            .nav-row-title { font-size: 2.8rem; }
+            
+            .protocol-wrapper { padding-top: 25vw; padding-left: 5vw; padding-right: 5vw; gap: 4vw; }
+            .protocol-main-title { font-size: 1rem; margin-bottom: 1vw; }
+            
+            .protocol-header-block { padding-left: 4vw; margin-bottom: 8vw; }
+            .protocol-elite-statement { font-size: 1.35rem; line-height: 1.3; }
+
+            .protocol-grid { grid-template-columns: 1fr; background: transparent; border: none; gap: 3vw; }
+            .protocol-module { padding: 6vw 5vw; border: 1px solid rgba(255,255,255,0.15); border-radius: 2px; }
+            
+            .pm-header { margin-bottom: 5vw; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .pm-num { font-size: 0.65rem; }
+            .pm-title { font-size: 1.8rem; }
+            .pm-desc { font-size: 0.75rem; line-height: 1.5; }
+
+            /* HUD MOBILE */
+            .hud-section { padding: 15vw 5vw; height: auto; min-height: auto; border-top: none;}
+            .hud-wrapper { display: flex; flex-direction: column; gap: 0; width: 100%; }
+            .hud-contact { order: 1; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12vw 0; position: relative; } 
+            .hud-clients { order: 2; align-items: center; text-align: center; padding: 12vw 0; border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; } 
+            .hud-info { order: 3; padding: 12vw 0; position: relative; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            
+            .hud-block { text-align: center; align-items: center; width: 100%; }
+            .hud-title { justify-content: center; border-bottom: none; width: 100%; padding-top: 0; border-top: none; }
+            .network-grid { grid-template-columns: 1fr; text-align: center; gap: 15px; }
+            .core-function { border-left: none; border-right: none; border-top: none; width: 100%; margin: 0; }
+            .hud-email { font-size: clamp(0.55rem, 3.8vw, 1rem); white-space: nowrap !important; word-break: normal !important; letter-spacing: 0.02em; }
+            .hud-bottom-bar { flex-direction: column; gap: 1.5rem; text-align: center; margin-top: 2rem; border-top: none; }
+            .hud-bottom-center { flex-direction: column; gap: 1rem; }
+            .hud-bottom-center span { margin: 0 !important; }
+            
+            .pulse-horizontal, .pulse-vertical, .pulse-vertical-right { display: none; }
+            .mobile-pulse { display: block; position: absolute; bottom: -1px; left: 0; width: 60px; height: 1px; background: #fff; box-shadow: 0 0 8px 1px rgba(255,255,255,0.8); opacity: 0; z-index: 10; }
+            
+            .mobile-pulse-1 { animation: pulseMobileX 4s infinite cubic-bezier(0.7, 0, 0.3, 1); }
+            .mobile-pulse-2 { animation: pulseMobileX 4s infinite cubic-bezier(0.7, 0, 0.3, 1); animation-delay: 2s; }
+            .mobile-pulse-3 { animation: pulseMobileX 4s infinite cubic-bezier(0.7, 0, 0.3, 1); animation-delay: 1s; }
+            
+            @keyframes pulseMobileX { 0% { left: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: calc(100% - 60px); opacity: 0; } }
+        }
+
+        @media (max-width: 480px) {
+            .sys-header { padding: 6vw 5vw; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fiducial-mark fm-top-left"></div>
+    <div class="fiducial-mark fm-top-right"></div>
+    <div class="fiducial-mark fm-bot-left"></div>
+    <div class="fiducial-mark fm-bot-right"></div>
+
+    <div id="sysNavOverlay">
+        <a href="index.html#manifesto" class="sys-nav-row" onclick="toggleSysNav()">
+            <span class="nav-row-number">01</span>
+            <span class="nav-row-title">MANIFESTO</span>
+            <div class="nav-row-ticker">
+                <div class="ticker-track">
+                    // REDUCTIVE LOGIC // STRUCTURAL PERMANENCE // NO SUPERFLUOUS STYLING //
+                </div>
+            </div>
+        </a>
+        <a href="archive.html" class="sys-nav-row" onclick="toggleSysNav()">
+            <span class="nav-row-number">02</span>
+            <span class="nav-row-title">ARCHIVE</span>
+            <div class="nav-row-ticker">
+                <div class="ticker-track">
+                    // 35+ MASS PRODUCED ASSETS // TECHNICAL DOSSIER // ENGINEERED PROTOTYPES //
+                </div>
+            </div>
+        </a>
+        <a href="protocol.html" class="sys-nav-row" onclick="toggleSysNav()">
+            <span class="nav-row-number">03</span>
+            <span class="nav-row-title">PROTOCOL</span>
+            <div class="nav-row-ticker">
+                <div class="ticker-track">
+                    // OPERATIVE PROTOCOL // BRAND DOCTRINE // STRUCTURAL PARAMETERS //
+                </div>
+            </div>
+        </a>
+        <a href="studio.html" class="sys-nav-row" onclick="toggleSysNav()">
+            <span class="nav-row-number">04</span>
+            <span class="nav-row-title">STUDIO</span>
+            <div class="nav-row-ticker">
+                <div class="ticker-track">
+                    // GIOVANNI FILARDI DESIGN // TORINO HQ // INDUSTRIAL DESIGN PRACTICE //
+                </div>
+            </div>
+        </a>
+        <a href="#studio-footer" class="sys-nav-row" onclick="toggleSysNav()">
+            <span class="nav-row-number">05</span>
+            <span class="nav-row-title">CONTACT</span>
+            <div class="nav-row-ticker">
+                <div class="ticker-track">
+                    // SECURE CHANNEL OPEN // R&D INITIATION // DIRECT TRANSMISSION //
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <header class="sys-header">
+        <a href="index.html" class="logo-link" style="z-index: 1001; position:relative;">
+            <img src="img/logo.png" alt="Giovanni Filardi Logo" class="brand-logo">
+        </a>
+        
+        <div class="sys-trigger-wrapper" style="z-index: 1001; position:relative;">
+            <span class="sys-active-page">// PROTOCOL</span>
+            <button class="sys-index-trigger" onclick="toggleSysNav()">
+                <span id="triggerText">NAVIGATE</span>
+                <svg id="triggerIcon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="protocol-wrapper">
+        <div class="protocol-main-title">// STUDIO DOCTRINE</div>
+        
+        <div class="protocol-header-block">
+            <h1 class="protocol-elite-statement">
+                Every product is subjected to a <span class="protocol-core-focus">four-stage protocol</span> engineered to eliminate unnecessary complexity and reinforce structural permanence.
+            </h1>
+        </div>
+        
+        <div class="protocol-grid">
+            
+            <div class="protocol-module">
+                <div class="focus-glow"></div>
+                <div class="pm-header">
+                    <span class="pm-num">01 //</span>
+                    <h2 class="pm-title">GEOMETRICAL<br>AUDIT</h2>
+                </div>
+                <div class="pm-desc">
+                    We identify where geometry generates unnecessary manufacturing complexity. Every formal decision is audited against <span class="pm-highlight">structural logic</span>, eliminating non-value-generating material and <span class="pm-highlight">reducing complexity at its origin</span>.
+                </div>
+            </div>
+
+            <div class="protocol-module">
+                <div class="focus-glow"></div>
+                <div class="pm-header">
+                    <span class="pm-num">02 //</span>
+                    <h2 class="pm-title">MANUFACTURING<br>COMPRESSION</h2>
+                </div>
+                <div class="pm-desc">
+                    We compress assemblies by reducing components, interfaces and manufacturing tolerances without compromising the product's architectural language. Fewer variables translate into <span class="pm-highlight">higher production efficiency</span>, stronger margins and <span class="pm-highlight">lower environmental impact</span>.
+                </div>
+            </div>
+
+            <div class="protocol-module">
+                <div class="focus-glow"></div>
+                <div class="pm-header">
+                    <span class="pm-num">03 //</span>
+                    <h2 class="pm-title">LIFECYCLE<br>ENGINEERING</h2>
+                </div>
+                <div class="pm-desc">
+                    Joints, fasteners and structural interfaces are engineered as <span class="pm-highlight">primary architectural elements</span> rather than secondary details. Every assembly is designed for controlled disassembly, long-term maintenance and <span class="pm-highlight">structural longevity</span>.
+                </div>
+            </div>
+
+            <div class="protocol-module">
+                <div class="focus-glow"></div>
+                <div class="pm-header">
+                    <span class="pm-num">04 //</span>
+                    <h2 class="pm-title">OBSOLESCENCE<br>ERADICATION</h2>
+                </div>
+                <div class="pm-desc">
+                    Every decision is rigorously validated against physical durability, manufacturing integrity and formal coherence. If an asset is engineered to become obsolete, it has already <span class="pm-highlight">failed at the structural level</span>. We <span class="pm-highlight">design for permanence</span>.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="studio-footer" class="hud-section">
+        <div class="hud-wrapper">
+            <div class="hud-block hud-info">
+                <div class="hud-title">STUDIO PROFILE</div>
+                <div class="hud-data">
+                    <span>ESTABLISHED //</span> <span class="hud-data-value">2021</span><br>
+                    <span>STATUS //</span> <span class="hud-data-value">ACTIVE STUDIO</span><br>
+                    <span>DISCIPLINE //</span> <span class="hud-data-value">INDUSTRIAL DESIGN</span>
+                </div>
+                <div class="hud-title" style="margin-top: 1rem;">COMPANY DETAILS</div>
+                <div class="hud-data">
+                    <span>VAT ID //</span> <span class="hud-data-value">12452260016</span><br>
+                    <span>LOCATION //</span> <span class="hud-data-value">TORINO, ITALY</span>
+                </div>
+                <div class="mobile-pulse mobile-pulse-3"></div>
+            </div>
+
+            <div class="core-function hud-contact">
+                <div class="pulse-vertical"></div>
+                <div class="pulse-vertical-right"></div>
+                
+                <div class="core-label">DIRECT CONTACT</div>
+                <a href="mailto:WORK@GIOVANNIFILARDIDESIGN.STUDIO?subject=Inquiry:%20Studio%20Availability" class="hud-email">WORK@GIOVANNIFILARDIDESIGN.STUDIO</a>
+                <div class="sys-status">
+                    SECURE CHANNEL OPEN // <a href="mailto:WORK@GIOVANNIFILARDIDESIGN.STUDIO" class="awaiting-link">AWAITING INPUT <span class="blinking-cursor"></span></a>
+                </div>
+                
+                <div class="mobile-pulse mobile-pulse-1"></div>
+            </div>
+
+            <div class="hud-block hud-clients">
+                <div class="hud-title">SELECTED CLIENTS & PARTNERS</div>
+                <div class="network-grid">
+                    <span>APEROL</span>
+                    <span>PAMPERO</span>
+                    <span>KASANOVA</span>
+                    <span>SMEG</span>
+                    <span>DURAGREEN</span>
+                    <span>ALMARJAN</span>
+                    <span style="grid-column: 1 / -1;">BERGKVIST</span>
+                </div>
+                
+                <div class="mobile-pulse mobile-pulse-2"></div>
+            </div>
+        </div>
+
+        <div class="hud-bottom-bar">
+            <div class="pulse-horizontal"></div>
+            
+            <span>&copy; 2026 GIOVANNI FILARDI DESIGN</span>
+            
+            <div class="hud-bottom-center">
+                <span>PORTRAIT PHOTOGRAPHY // <a href="https://www.instagram.com/federico.lano/" target="_blank" rel="noopener noreferrer" class="hud-data-value">FEDERICO LANO ↗</a></span>
+                <span>DATA ENCRYPTED // <span class="hud-data-value">ALL RIGHTS RESERVED</span></span>
+            </div>
+            
+            <div class="social-nodes">
+                <a href="https://www.linkedin.com/in/giovanni-filardi-9696701a6/" target="_blank" class="social-node" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+                <a href="https://www.instagram.com/giovannifilardidesign/" target="_blank" class="social-node" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // [ GESTIONE MENU SYS.INDEX ]
+        function toggleSysNav() {
+            const overlay = document.getElementById('sysNavOverlay');
+            const trigger = document.querySelector('.sys-index-trigger');
+            const textEl = document.getElementById('triggerText');
+            
+            overlay.classList.toggle('active');
+            
+            if (overlay.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+                trigger.classList.add('open-state');
+                textEl.innerText = 'CLOSE';
+            } else {
+                document.body.style.overflow = 'auto';
+                trigger.classList.remove('open-state');
+                textEl.innerText = 'NAVIGATE';
+            }
+        }
+    </script>
+</body>
+</html>
