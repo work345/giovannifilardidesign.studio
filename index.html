@@ -271,7 +271,55 @@
         .page-one { min-height: 100vh; min-height: 100dvh; width: 100vw; position: relative; z-index: 10; background-color: #000; overflow: hidden; }
         #topology-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
-        .manifesto-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; font-size: clamp(1.2rem, 2.5vw, 3rem); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; z-index: 10; mix-blend-mode: difference; }
+        .manifesto-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: calc(100% - 10vw);
+            max-width: calc(100% - 10vw);
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: clamp(1.2rem, 2.5vw, 3rem);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            line-height: 1;
+            white-space: nowrap;
+            z-index: 10;
+            mix-blend-mode: difference;
+            overflow: visible;
+        }
+
+        .manifesto-text-inner {
+            display: inline-block;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(18px);
+            letter-spacing: 0.08em;
+            filter: blur(5px);
+            will-change: transform, opacity, filter;
+        }
+
+        .manifesto-text.is-visible .manifesto-text-inner {
+            animation: manifestoSystemReveal 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes manifestoSystemReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(18px);
+                filter: blur(5px);
+            }
+            45% {
+                opacity: 1;
+                filter: blur(0);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
 
         /* ICONA INTERATTIVA E CLICCABILE D'ÉLITE */
         .scroll-indicator { 
@@ -401,6 +449,22 @@
             body { cursor: auto !important; } html { scroll-snap-type: none; }
             .page-one, .volume-layered, .horizontal-wrapper, .founder-manifesto, .hud-section { scroll-snap-align: none; }
             .desktop-video { display: none; } .mobile-video { display: block; }
+
+            /* MANIFESTO MOBILE — FIT GARANTITO */
+            .manifesto-text {
+                width: calc(100vw - 12px);
+                max-width: calc(100vw - 12px);
+                padding: 0;
+                font-size: 6vw;
+                line-height: 1;
+                white-space: nowrap;
+                overflow: visible;
+            }
+
+            .manifesto-text-inner {
+                white-space: nowrap;
+                max-width: 100%;
+            }
             .boot-logo { width: 90px; top: 5vw; left: 5vw; } 
             
             .boot-badge { width: 85px; top: 3.2vw; right: 5vw; }
@@ -552,7 +616,9 @@
         <div class="fiducial-mark fm-top-right"></div>
         <div class="fiducial-mark fm-bot-left"></div>
         <div class="fiducial-mark fm-bot-right"></div>
-        <div class="manifesto-text">giovannifilardidesign.studio</div>
+        <div class="manifesto-text" id="manifestoText">
+            <span class="manifesto-text-inner" id="manifestoTextInner">giovannifilardidesign.studio</span>
+        </div>
         
         <a href="#volume-anchor" class="scroll-indicator" onclick="event.preventDefault(); document.getElementById('volume-anchor').scrollIntoView({behavior:'smooth'})"></a>
     </div>
@@ -745,6 +811,57 @@
             const mobileVideo = document.getElementById('boot-video-mobile');
             const scrollInd = document.querySelector('.scroll-indicator');
             const mainHeader = document.getElementById('main-header');
+            const manifestoText = document.getElementById('manifestoText');
+            const manifestoTextInner = document.getElementById('manifestoTextInner');
+
+            // Riduce automaticamente il font finché il dominio entra perfettamente
+            // nella larghezza reale del dispositivo, senza tagli o ritorni a capo.
+            function fitManifestoText() {
+                if (!manifestoText || !manifestoTextInner) return;
+
+                const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
+
+                if (!isMobileViewport) {
+                    manifestoTextInner.style.fontSize = '';
+                    return;
+                }
+
+                const targetWidth = Math.max(manifestoText.clientWidth - 2, 0);
+
+                // Ricerca binaria: aumenta o riduce il font finché il dominio
+                // occupa praticamente tutta la larghezza disponibile.
+                let low = 8;
+                let high = 64;
+                let best = low;
+
+                for (let i = 0; i < 20; i++) {
+                    const mid = (low + high) / 2;
+                    manifestoTextInner.style.fontSize = `${mid}px`;
+
+                    const currentWidth = manifestoTextInner.getBoundingClientRect().width;
+
+                    if (currentWidth <= targetWidth) {
+                        best = mid;
+                        low = mid;
+                    } else {
+                        high = mid;
+                    }
+                }
+
+                manifestoTextInner.style.fontSize = `${best}px`;
+            }
+
+            fitManifestoText();
+
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(fitManifestoText);
+            }
+
+            window.addEventListener('resize', fitManifestoText);
+            window.addEventListener('orientationchange', () => {
+                setTimeout(fitManifestoText, 150);
+            });
+
             
             const fMarks = [
                 document.querySelector('.fm-top-left'),
@@ -764,6 +881,21 @@
                 
                 setTimeout(() => {
                     bootContainer.remove();
+
+                    const revealManifesto = () => {
+                        fitManifestoText();
+                        requestAnimationFrame(() => {
+                            if (manifestoText) {
+                                manifestoText.classList.add('is-visible');
+                            }
+                        });
+                    };
+
+                    if (document.fonts && document.fonts.ready) {
+                        document.fonts.ready.then(revealManifesto);
+                    } else {
+                        revealManifesto();
+                    }
                     mainHeader.style.opacity = "1"; 
 
                     if(typeof techMaterial !== 'undefined' && techMaterial && typeof gsap !== 'undefined') {
