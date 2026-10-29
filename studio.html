@@ -570,6 +570,16 @@ body:has(#sysNavOverlay.active) .sys-header .logo-link{opacity:0!important;visib
  .client-logo-item:not(.is-active){display:none!important}
 }
 </style>
+
+<style id="gfd-mobile-scroll-stability-r08">
+/* REV08: Keep inertial touch scrolling native; smooth movements remain opt-in JS actions.
+   No styles in this sheet affect desktop fine-pointer layouts. */
+@media (max-width:1024px), (hover:none) and (pointer:coarse) {
+  html {scroll-behavior:auto;}
+  /* Fixed navigation belongs to the visual viewport, not document flow. */
+  #sysNavOverlay {overscroll-behavior:contain;}
+}
+</style>
 </head>
 <body>
 

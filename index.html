@@ -2967,7 +2967,7 @@ button,
 }
 
 </style>
-<link href="https://giovannifilardidesign.studio/" rel="canonical"/><meta content="website" property="og:type"/><meta content="Giovanni Filardi Design" property="og:title"/><meta content="Industrial design studio. Reductive logic. Structural permanence." property="og:description"/><meta content="https://giovannifilardidesign.studio/" property="og:url"/><meta content="https://giovannifilardidesign.studio/img/Image1.png" property="og:image"/><meta content="summary_large_image" name="twitter:card"/><style>
+<link href="https://giovannifilardidesign.studio/" rel="canonical"/><meta content="website" property="og:type"/><meta content="Giovanni Filardi Design" property="og:title"/><meta content="Industrial design studio. Reductive logic. Structural permanence." property="og:description"/><meta content="https://giovannifilardidesign.studio/" property="og:url"/><meta content="https://giovannifilardidesign.studio/img/aura1.png" property="og:image"/><meta content="summary_large_image" name="twitter:card"/><style>
 /* ========================================================================== 
    GFD V12 — UX HIERARCHY / FULL-QUALITY BELLA / MOBILE EDITORIAL PAGE
    ========================================================================== */
@@ -11711,6 +11711,28 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
   #bellaZoomStage .gfd-bella-context-logo{height:3.35rem!important;}
 }
 </style>
+
+<style id="gfd-mobile-scroll-stability-r08">
+/* REV08: Keep inertial touch scrolling native; smooth movements remain opt-in JS actions.
+   No styles in this sheet affect desktop fine-pointer layouts. */
+@media (max-width:1024px), (hover:none) and (pointer:coarse) {
+  html {scroll-behavior:auto;}
+  /* Fixed navigation belongs to the visual viewport, not document flow. */
+  #sysNavOverlay {overscroll-behavior:contain;}
+}
+</style>
+
+<style id="gfd-manifesto-mobile-viewport-stability-r08">
+/* Dynamic browser chrome must not resize full-screen editorial chapters mid-gesture.
+   Small viewport units remain stable when Safari/Chrome address bars collapse. */
+@supports (height:100svh) {
+ @media (max-width:1024px), (hover:none) and (pointer:coarse) {
+  #precision-boot, #precision-boot .video-container {height:100svh !important;}
+  #precision-boot .boot-panel {height:50svh !important;}
+  #manifesto.page-one, #volume-anchor.volume-layered {min-height:100svh !important;}
+ }
+}
+</style>
 </head>
 <body class="scroll-locked" data-gfd-build="DEFINITIVE-CONSOLIDATED">
 <div id="precision-boot">
@@ -11842,7 +11864,7 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
 </div>
 </div><section aria-label="Selected industrial design works — editorial folio" class="horizontal-wrapper gfd-folio" id="selectedWorksFolio" tabindex="0">
 <div class="gfd-folio-stage" id="folioStage">
-<article aria-label="AURA, project 1 of 5" class="scroll-slide is-active" data-index="0" id="slide1" style="--folio-bg:url('img/Image1.png'); --folio-focus:50% 54%;">
+<article aria-label="AURA, project 1 of 5" class="scroll-slide is-active" data-index="0" id="slide1" style="--folio-bg:url('img/aura1.png'); --folio-focus:50% 54%;">
 <div class="folio-page">
 <section class="folio-editorial-panel">
 <div class="folio-kicker">GFD / SELECTED INDUSTRIAL WORKS</div>
@@ -11863,12 +11885,12 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
 </div>
 </section>
 <section class="folio-image-panel">
-<div class="folio-image-frame"><img alt="AURA lighting system" class="pure-image" src="img/Image1.png"/></div>
+<div class="folio-image-frame"><img alt="AURA lighting system" class="pure-image" src="img/aura1.png"/></div>
 <div class="folio-mobile-index"><div class="folio-mobile-topline"><strong class="folio-mobile-index-title">AURA</strong></div><div class="folio-mobile-bottomline"><div class="gfd-folio-mobile-evidence-group"><span class="folio-mobile-index-meta">LIGHTING SYSTEM<br/>ENGINEERED BATCH</span><div class="gfd-folio-mobile-evidence" data-project-evidence="aura"><span class="gfd-folio-mobile-evidence-client"><span class="gfd-project-evidence-logo-frame gfd-logo-duragreen"><img alt="DuraGreen" decoding="async" height="800" loading="lazy" src="img/duragreen.png" width="1600"/></span></span><span class="gfd-project-evidence-primary"><span>UK / 2025</span><span>ENGINEERED BATCH</span></span><span class="gfd-project-evidence-resolution">FULL-SPECTRUM LED / ALABASTER / SERVICEABLE PUSH-FIT MODULE</span><a class="gfd-project-dossier-link" data-project-id="aura" data-project-name="AURA" data-project-index="01" href="archive.html?project=aura">ACCESS PROJECT DOSSIER <b aria-hidden="true">↗</b></a></div></div><span class="folio-mobile-index-number">01 / 05</span></div></div>
 </section>
 </div>
 </article>
-<article aria-label="BELLA ZOOM, project 2 of 5" class="scroll-slide" data-index="1" id="slide2" style="--folio-bg:url('img/Image2.png'); --folio-focus:54% 51%;">
+<article aria-label="BELLA ZOOM, project 2 of 5" class="scroll-slide" data-index="1" id="slide2" style="--folio-bg:url('img/bellazoom1.png'); --folio-focus:54% 51%;">
 <div class="folio-page">
 <section class="folio-editorial-panel">
 <div class="folio-kicker">GFD / SELECTED INDUSTRIAL WORKS</div>
@@ -11889,7 +11911,7 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
 </div>
 </section>
 <section class="folio-image-panel">
-<div class="folio-image-frame"><img alt="BELLA ZOOM lighting system" class="pure-image" src="img/Image2.png"/></div>
+<div class="folio-image-frame"><img alt="BELLA ZOOM lighting system" class="pure-image" src="img/bellazoom1.png"/></div>
 <div class="folio-mobile-index"><div class="folio-mobile-topline"><strong class="folio-mobile-index-title">BELLA<br/>ZOOM</strong></div><div class="folio-mobile-bottomline"><div class="gfd-folio-mobile-evidence-group"><span class="folio-mobile-index-meta">ADJUSTABLE LIGHTING SYSTEM<br/>ENGINEERED BATCH</span><div class="gfd-folio-mobile-evidence" data-project-evidence="bellazoom"><span class="gfd-folio-mobile-evidence-client"><span class="gfd-project-evidence-logo-frame gfd-logo-duragreen"><img alt="DuraGreen" decoding="async" height="800" loading="lazy" src="img/duragreen.png" width="1600"/></span></span><span class="gfd-project-evidence-primary"><span>UK / 2024</span><span>ENGINEERED BATCH</span></span><span class="gfd-project-evidence-resolution">20°–50° OPTICAL ZOOM / ONE LANGUAGE ACROSS TYPOLOGIES</span><a class="gfd-project-dossier-link" data-project-id="bellazoom" data-project-name="BELLA ZOOM" data-project-index="02" href="archive.html?project=bellazoom">ACCESS PROJECT DOSSIER <b aria-hidden="true">↗</b></a></div></div><span class="folio-mobile-index-number">02 / 05</span></div></div>
 </section>
 </div>
@@ -12635,7 +12657,7 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
             const MOBILE_LAMP_BOTTOM = 565;
             const frameSources = desktopBellaGeometry.matches ? BELLA_DESKTOP_FRAMES : BELLA_MOBILE_FRAMES;
             const frameSize = desktopBellaGeometry.matches ? { width: 1920, height: 1080 } : { width: 1080, height: 608 };
-            const cacheLimit = desktopBellaGeometry.matches ? 40 : 40;
+            const cacheLimit = desktopBellaGeometry.matches ? 40 : 24;
             const imageCache = new Map();
             const loading = new Map();
             const bellaWords = Array.from(bellaStage.querySelectorAll('.gfd-bella-word b'));
@@ -12658,6 +12680,11 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
             let wordMetrics = [];
             let measuredStageWidth = 1;
             let requestedExactFrame = 0;
+            // Snapshot touch viewport height. Browser toolbars frequently modify innerHeight
+            // without a device rotation; their movement must not reset the animation progress.
+            let stableMobileViewportWidth = window.innerWidth;
+            let stableMobileViewportHeight = window.innerHeight;
+
 
             bellaVideo.pause();
             bellaVideo.muted = true;
@@ -12705,7 +12732,7 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
             };
 
             const prefetch = center => {
-                const radius = desktopBellaGeometry.matches ? 8 : 10;
+                const radius = desktopBellaGeometry.matches ? 8 : 3;
                 const direction = targetFrame >= displayFrame ? 1 : -1;
                 const order = [0];
                 for (let i = 1; i <= radius; i++) order.push(i * direction, -i * direction);
@@ -12714,7 +12741,7 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
 
             const resizeCanvas = () => {
                 const rect = bellaCanvas.getBoundingClientRect();
-                const dpr = Math.min(window.devicePixelRatio || 1, desktopBellaGeometry.matches ? 2 : 1.5);
+                const dpr = Math.min(window.devicePixelRatio || 1, desktopBellaGeometry.matches ? 2 : 1.25);
                 const width = Math.max(1, Math.round(rect.width * dpr));
                 const height = Math.max(1, Math.round(rect.height * dpr));
                 if (bellaCanvas.width !== width || bellaCanvas.height !== height) {
@@ -12819,7 +12846,7 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
                 const highImage = imageCache.get(upper);
                 loadFrame(lower).catch(() => {});
                 loadFrame(upper).catch(() => {});
-                prefetch(frame);
+                if (visible) prefetch(frame);
 
                 const first = lowImage || highImage || nearestCached(frame);
                 if (!first) return;
@@ -12835,7 +12862,7 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
                 context.fillStyle = '#000';
                 context.fillRect(0, 0, bellaCanvas.width, bellaCanvas.height);
                 context.imageSmoothingEnabled = true;
-                context.imageSmoothingQuality = 'high';
+                context.imageSmoothingQuality = desktopBellaGeometry.matches ? 'high' : 'medium';
                 context.drawImage(first, rect.x, rect.y, rect.width, rect.height);
                 if (lowImage && highImage && upper !== lower && mix > .001) {
                     context.globalAlpha = mix;
@@ -13009,7 +13036,7 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
                 scrollRaf = 0;
                 if (externalDemoLock) return;
                 const rect = bellaSection.getBoundingClientRect();
-                const travel = Math.max(bellaSection.offsetHeight - window.innerHeight, 1);
+                const travel = Math.max(bellaSection.offsetHeight - (desktopBellaGeometry.matches ? window.innerHeight : stableMobileViewportHeight), 1);
                 // Mobile uses the same interpolated RAF renderer as desktop.
                 // Scrolling only updates the target: no forced frame jumps or late-decode flashes.
                 targetFrame = clamp(-rect.top / travel, 0, 1) * LAST_FRAME;
@@ -13042,6 +13069,12 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
             visibilityObserver.observe(bellaSection);
 
             const requestResize = () => {
+                if (!desktopBellaGeometry.matches) {
+                    const nextWidth = window.innerWidth;
+                    if (Math.abs(nextWidth - stableMobileViewportWidth) < 2) return;
+                    stableMobileViewportWidth = nextWidth;
+                    stableMobileViewportHeight = window.innerHeight;
+                }
                 if (resizeRaf) return;
                 resizeRaf = requestAnimationFrame(() => {
                     resizeRaf = 0;
@@ -14241,7 +14274,8 @@ h2:is(#manifesto, #volume-anchor, #bella-zoom-experience, #studio-manifesto, #ma
           let delta = 0;
           if (rect.bottom > bottomLimit) delta = rect.bottom - bottomLimit;
           else if (rect.top < topLimit) delta = rect.top - topLimit;
-          if (Math.abs(delta) > 1) window.scrollBy({top:delta,behavior:'auto'});
+          /* Readout remains in document flow. Never force the page to jump after a touch.
+             The user can continue scrolling naturally to see the complete copy. */
         }, reduced.matches ? 0 : 520);
       };
       nodes.forEach(node => {

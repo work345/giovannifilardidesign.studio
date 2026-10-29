@@ -1116,6 +1116,16 @@
 }
 @media(max-width:600px){.hud-email,.hud-email:hover,.hud-email:focus-visible{font-size:clamp(10.2px,3.15vw,15px)!important;line-height:1.4!important;}}
 </style>
+
+<style id="gfd-mobile-scroll-stability-r08">
+/* REV08: Keep inertial touch scrolling native; smooth movements remain opt-in JS actions.
+   No styles in this sheet affect desktop fine-pointer layouts. */
+@media (max-width:1024px), (hover:none) and (pointer:coarse) {
+  html {scroll-behavior:auto;}
+  /* Fixed navigation belongs to the visual viewport, not document flow. */
+  #sysNavOverlay {overscroll-behavior:contain;}
+}
+</style>
 </head>
 <body data-gfd-build="ARCHIVE-V2-INDEX-SYNC">
 
